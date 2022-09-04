@@ -14,7 +14,7 @@ withDefaults(defineProps<Props>(), {
 <style scoped>
 h1 {
   color: #7b7c7f;
-  font-weight: 600;
-  font-size: 1.5rem;
+  font-weight: 700;
+  font-size: 2rem;
 }
 </style>

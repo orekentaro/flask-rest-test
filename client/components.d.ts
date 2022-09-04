@@ -6,6 +6,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     Alert: typeof import('./src/components/Alert.vue')['default']
     CloseButton: typeof import('./src/components/CloseButton.vue')['default']
+    Detail_content: typeof import('./src/components/job_seeker_components/detail_content.vue')['default']
+    DetailContent: typeof import('./src/components/job_seeker_components/DetailContent.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']

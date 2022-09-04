@@ -20,7 +20,7 @@ def before_request():
 
 @lr.route('/', methods=['get'])
 def test():
-    """befor_requestのテスト"""
+    """before_requestのテスト"""
     response = jsonify({'result': 'ok'})
     return make_response(response)
 

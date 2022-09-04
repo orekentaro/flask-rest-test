@@ -83,6 +83,9 @@ class JobModule(BaseModule):
                     res_dict = {
                         "job_id": job_id,
                         "name": job_seeker.name,
+                        "birthday": cls.date_string_to_slash(
+                            job_seeker.birthday),
+                        "career": job_seeker.career,
                         "gender": cls.const.GENDER_DICT[job_seeker.gender],
                         "job_ads": jm.job_offer_name,
                         "title": ja.title,
@@ -93,7 +96,7 @@ class JobModule(BaseModule):
                         "memo": [],
                         "create_time": cls.date_to_string(
                             job_seeker.create_time
-                            )
+                        )
                     }
 
                     for prg in progress_all:
@@ -129,7 +132,7 @@ class JobModule(BaseModule):
                         memo_dict = {
                             "create_time": create_time,
                             "memo": memo.memo,
-                            "creater": user.get("name", "")
+                            "creator": user.get("name", "")
                         }
                         res_dict["memo"].append(memo_dict)
 

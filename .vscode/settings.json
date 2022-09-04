@@ -1,0 +1,8 @@
+{
+  "python.testing.pytestArgs": [
+    "api"
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "vue3snippets.enable-compile-vue-file-on-did-save-code": true
+}

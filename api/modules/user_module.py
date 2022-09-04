@@ -15,7 +15,6 @@ class UserModule(BaseModule):
 
         try:
             password = cls.password_hash(password)
-            print(password)
             with cls.session_scope() as db_session:
                 user = db_session.query(UserMaster).filter_by(
                     email=email, password=password).first()
@@ -27,4 +26,4 @@ class UserModule(BaseModule):
 
         except Exception as e:
             print(e)
-            return {"result": 'Exceptinon'}
+            return {"result": 'Exception'}

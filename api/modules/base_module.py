@@ -1,8 +1,10 @@
+from typing import Final
 import hashlib
 from contextlib import contextmanager
 from models.db import session
 from models.id_model import Id
 from models.user_master import UserMaster
+from datetime import datetime
 
 
 class BaseModule:
@@ -54,15 +56,22 @@ class BaseModule:
         return user
 
     @classmethod
-    def date_to_string(cls, date: object) -> str:
+    def date_to_string(cls, date: datetime) -> str:
         try:
             return_date = date.strftime('%Y/%m/%d')
         except Exception:
             return_date = None
         return return_date
 
+    @classmethod
+    def date_string_to_slash(cls, date: str) -> str:
+        try:
+            return_date = f'{date[:4]}/{date[4:6]}/{date[6:8]}'
+        except Exception:
+            return_date = None
+        return return_date
 
     class Constant:
-        DELETE_FLAG_OFF = "0"
-        DELETE_FLAG_ON = "1"
-        GENDER_DICT = {"m": "男性", "f": "女性"}
+        DELETE_FLAG_OFF: Final[str] = "0"
+        DELETE_FLAG_ON: Final[str] = "1"
+        GENDER_DICT: Final[dict[str, str]] = {"m": "男性", "f": "女性"}

@@ -4,7 +4,7 @@ services:
     container_name: recruit-management-db
     image: postgres:14.0-alpine
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:
@@ -24,4 +24,3 @@ services:
     tty: true
 volumes:
   pgdata:
-  node_modules:

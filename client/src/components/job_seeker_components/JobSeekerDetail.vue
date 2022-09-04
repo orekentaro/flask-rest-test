@@ -1,4 +1,4 @@
-<template #defalt="props">
+<template #default="props">
   <TableHeaderTitle :title="data?.name" />
   <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
     <el-tab-pane label="面談履歴" name="first">面談履歴</el-tab-pane>
@@ -13,8 +13,10 @@
             >
           </div>
         </template>
-      </el-card></el-tab-pane
-    >
+        <DetailContent label="生年月日" :content="data?.birthday" />
+        <DetailContent label="経歴" :content="data?.career" />
+      </el-card>
+    </el-tab-pane>
     <el-tab-pane label="メモ" name="third">メモ</el-tab-pane>
   </el-tabs>
 </template>

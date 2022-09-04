@@ -24,3 +24,20 @@ make run
 ```
 make restart
 ```
+
+## DBシェル起動
+```
+make dbshell
+
+# ログイン後
+\c recruit-management
+```
+
+### テストユーザーでのログイン方法
+```
+# メールアドレス
+test@test.test
+
+# パスワード
+password1234
+```

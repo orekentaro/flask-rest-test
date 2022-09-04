@@ -1,6 +1,8 @@
 export interface JobSeeker {
   corr_person: string;
   gender: string;
+  birthday: string;
+  career: string;
   job_ads: string;
   job_id: string;
   memo: Memo[];

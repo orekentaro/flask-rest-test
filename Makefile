@@ -1,6 +1,9 @@
 create_data:
 	docker exec -it recruit-management-api python create_table.py
 
+dbshell:
+	docker exec -it recruit-management-db psql -U postgres
+
 run_client:
 	npm run -C client dev
 

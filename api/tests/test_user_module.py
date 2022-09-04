@@ -15,7 +15,7 @@ class TestUserModule:
     def client(self, app_test):
         return app_test.test_client()
 
-    def test_login_succese(self, client):
+    def test_login_success(self, client):
         with client:
             res = client.post(
                 '/login', data={

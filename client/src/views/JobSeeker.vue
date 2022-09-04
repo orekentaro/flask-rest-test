@@ -46,7 +46,7 @@ const handleDelete = (value: JobSeeker) => {
 };
 
 onBeforeMount(() => {
-  fetchApi("http://127.0.0.1:8080/job_seeker?active_flag=0")
+  fetchApi("api/job_seeker?active_flag=0")
     .then((response) => {
       let res = response.data;
       if (res["result"] == "success") {
