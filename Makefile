@@ -1,5 +1,8 @@
 create_data:
-	docker exec -it recruit-management-api python create_table.py
+	docker exec -it api python create_table.py
+
+db_shell:
+	docker exec -it db psql -U postgres
 
 run_client:
 	npm run -C client dev
@@ -20,7 +23,7 @@ data_crear:
 	docker volume rm recruit-management_pgdata
 
 dalete_image:
-	docker rmi recruit-management_api
+	docker rmi recruit-management-api
 
 reset:
 	make down

@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   db:
-    container_name: recruit-management-db
+    container_name: db
     image: postgres:14.0-alpine
     ports:
       - "5432:5432"
@@ -13,7 +13,7 @@ services:
       - POSTGRES_PASSWORD=nagato8
     tty: true
   api:
-    container_name: recruit-management-api
+    container_name: api
     build:
       context: .
       dockerfile: ./api/Dockerfile
