@@ -1,8 +1,6 @@
 <template #default="props">
-  <div class="label">{{ label }}</div>
-  <div class="content">
-    {{ content }}
-  </div>
+  <div class="label">・ {{ label }}</div>
+  <div class="content">- {{ content }}</div>
 </template>
 <script lang="ts" setup>
 interface Props {

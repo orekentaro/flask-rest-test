@@ -25,6 +25,15 @@ make run
 make restart
 ```
 
+## システムストップ
+```
+#vueのサーバー停止
+ctrl + c
+
+# dockerコンテナの停止
+make down
+```
+
 ## DBシェル起動
 ```
 make dbshell

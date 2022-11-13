@@ -24,8 +24,12 @@ class BaseModule:
     def get_id(cls, target_id: str) -> int:
         return_id = 1
         with cls.session_scope() as db_session:
-            this_id = db_session.query(Id).filter_by(
-                id_name=target_id).with_for_update().first()
+            this_id = (
+                db_session.query(Id)
+                .filter_by(id_name=target_id)
+                .with_for_update()
+                .first()
+            )
             if this_id:
                 return_id = this_id.id_count + 1
                 this_id.id_count = return_id
@@ -41,16 +45,16 @@ class BaseModule:
 
     @classmethod
     def password_hash(cls, password: str) -> str:
-        return hashlib.sha256(password.encode('utf-8')).hexdigest()
+        return hashlib.sha256(password.encode("utf-8")).hexdigest()
 
     @classmethod
     def get_user(cls, **user_info: dict) -> object:
         with cls.session_scope() as db_session:
-            user = db_session.query(
-                UserMaster
-                ).filter_by(
-                    **user_info, delete_flag="0"
-                ).one_or_none()
+            user = (
+                db_session.query(UserMaster)
+                .filter_by(**user_info, delete_flag="0")
+                .one_or_none()
+            )
             if user:
                 user = user.__dict__
         return user
@@ -58,7 +62,7 @@ class BaseModule:
     @classmethod
     def date_to_string(cls, date: datetime) -> str:
         try:
-            return_date = date.strftime('%Y/%m/%d')
+            return_date = date.strftime("%Y/%m/%d")
         except Exception:
             return_date = None
         return return_date
@@ -66,7 +70,7 @@ class BaseModule:
     @classmethod
     def date_string_to_slash(cls, date: str) -> str:
         try:
-            return_date = f'{date[:4]}/{date[4:6]}/{date[6:8]}'
+            return_date = f"{date[:4]}/{date[4:6]}/{date[6:8]}"
         except Exception:
             return_date = None
         return return_date
