@@ -10,5 +10,4 @@ app.secret_key = "内緒"
 
 
 if __name__ == '__main__':
-    # create_table()
     app.run(debug=True, host='0.0.0.0', port=8080)

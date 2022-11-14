@@ -16,11 +16,14 @@ services:
       context: .
       dockerfile: ./api/Dockerfile
     volumes:
-      - './api/:/app/'
+      - './api:/app:cached'
     ports:
       - "8080:8080"
       - "5678:5678"
+    depends_on:
+      - db
     tty: true
+    stdin_open: true
 volumes:
   pgdata:
   node_modules:

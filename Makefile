@@ -33,7 +33,6 @@ del:
 start:
 	make run_build
 	make install_node
-	sleep 5
 	make create_data
 	make run_client
 
