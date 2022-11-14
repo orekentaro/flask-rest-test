@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 from sqlalchemy import Boolean, Column, DateTime, String, create_engine
@@ -6,11 +7,11 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 DATABASE = "postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}".format(
     **{
-        "DB_USER": "postgres",
-        "DB_PASS": "nagato8",
-        "DB_HOST": "db",
-        "DB_PORT": "5432",
-        "DB_NAME": "recruit-management",
+        "DB_USER": os.environ["POSTGRES_USER"],
+        "DB_PASS": os.environ["POSTGRES_PASSWORD"],
+        "DB_HOST": os.environ["DB_HOST"],
+        "DB_PORT": os.environ["DB_PORT"],
+        "DB_NAME": os.environ["POSTGRES_DB"],
     }
 )
 

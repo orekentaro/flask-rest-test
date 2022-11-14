@@ -10,5 +10,4 @@ RUN apt-get update && apt-get install -y \
 COPY ./api/requirements.txt ${PROJECT_ROOTDIR}/
 COPY ./api ${PROJECT_ROOTDIR}/
 RUN pip install -r requirements.txt
-# CMD [ "uwsgi", "--ini", "app.ini"]
-CMD [ "python", "app.py"]
+CMD ["python",  "-m" "debugpy" "--listen" "0.0.0.0:5678" "-m" "app" "--wait-for-client" "--multiprocess" "-m" "app.py"]

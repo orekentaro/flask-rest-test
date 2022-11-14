@@ -25,7 +25,7 @@ data_crear:
 dalete_image:
 	docker rmi recruit-management-api
 
-reset:
+del:
 	make down
 	make dalete_image
 	make data_crear
@@ -33,11 +33,12 @@ reset:
 start:
 	make run_build
 	make install_node
+	sleep 5
 	make create_data
 	make run_client
 
-restart:
-	make reset
+reset:
+	make del
 	make start
 
 run:

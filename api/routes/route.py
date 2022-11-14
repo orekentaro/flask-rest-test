@@ -1,6 +1,6 @@
-from flask import Blueprint, make_response, jsonify, session, request
-from modules.user_module import UserModule
+from flask import Blueprint, jsonify, make_response, request, session
 from modules.job_module import JobModule
+from modules.user_module import UserModule
 
 # ログイン不要ルート
 ln = Blueprint('ln', __name__)
