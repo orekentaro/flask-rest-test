@@ -1,7 +1,8 @@
+import hashlib
 from datetime import datetime as dt
 
 from models.auth_master import AuthMaster
-from models.base_model import ENGINE, BaseModel
+from models.base_model import ENGINE, BaseModel, session
 from models.job_ads import JobAds
 from models.job_master import JobMaster
 from models.job_seeker import JobSeeker
@@ -10,7 +11,6 @@ from models.progress_info import ProgressInfo
 from models.progress_master import ProgressMaster
 from models.progress_result import ProgressResult
 from models.user_master import UserMaster
-from modules.base_module import BaseModule as bm
 
 
 def create_table():
@@ -23,14 +23,14 @@ def create_table():
 
 
 def _create_data():
-    with bm.session_scope() as db_session:
+    with session() as db_session:
         auth = AuthMaster(auth_id=1, auth="admin", changer="create")
         db_session.add(auth)
 
         user = UserMaster(
             name="テストくん",
             email="test@test.test",
-            password=bm.password_hash("password1234"),
+            password=hashlib.sha256("password123".encode("utf-8")).hexdigest(),
             auth_id=1,
             changer="create",
         )
@@ -127,7 +127,6 @@ def _create_data():
             changer="create",
         )
         db_session.add(job_master)
-        db_session.commit()
 
         job_ads = JobAds(
             ads_id=1,
@@ -141,7 +140,6 @@ def _create_data():
             changer="create",
         )
         db_session.add(job_ads)
-        db_session.commit()
 
         job_seeker = JobSeeker(
             job_id=1,
