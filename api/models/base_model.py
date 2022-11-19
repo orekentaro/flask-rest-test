@@ -3,7 +3,7 @@ from datetime import datetime
 
 from sqlalchemy import Boolean, Column, DateTime, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
-from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm import Session, scoped_session
 
 DATABASE = "postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}".format(
     **{
@@ -17,9 +17,9 @@ DATABASE = "postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}".form
 
 ENGINE = create_engine(DATABASE, echo=True)
 
-session = scoped_session(
-    sessionmaker(autoflush=False, bind=ENGINE, autocommit=False, expire_on_commit=False)
-)
+
+def session() -> Session:
+    return Session(autocommit=False, autoflush=True, bind=ENGINE)
 
 
 class Mixin(object):
