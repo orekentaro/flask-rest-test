@@ -128,6 +128,8 @@ def _create_data():
         )
         db_session.add(job_master)
 
+        db_session.commit()
+
         job_ads = JobAds(
             ads_id=1,
             job_master_id=1,
@@ -140,6 +142,8 @@ def _create_data():
             changer="create",
         )
         db_session.add(job_ads)
+
+        db_session.commit()
 
         job_seeker = JobSeeker(
             job_id=1,
@@ -179,6 +183,7 @@ def _create_data():
             changer=1,
         )
         db_session.add(memo)
+        db_session.commit()
 
 
 if __name__ == "__main__":
