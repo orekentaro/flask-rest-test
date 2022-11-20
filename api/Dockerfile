@@ -1,4 +1,4 @@
-FROM python:3.9-buster
+FROM python:3.10-buster
 ENV PROJECT_ROOTDIR /app
 
 WORKDIR ${PROJECT_ROOTDIR}
