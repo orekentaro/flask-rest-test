@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from modules.user_module import UserModule
+from modules.auth_module import AuthModule
 
 auth = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -8,6 +8,4 @@ auth = Blueprint("auth", __name__, url_prefix="/auth")
 def login():
     """ログインルート"""
     data = request.json
-    UserModule().login("", "")
-
-    return data
+    return AuthModule().login(**data)
