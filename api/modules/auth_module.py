@@ -1,12 +1,13 @@
 import hashlib
-import time
+from typing import Any
 
-import jwt
 import utils.constans as const
-from flask import Response, json, request
+from flask import Response, json
+from flask_jwt_extended import set_access_cookies
 from models.user_master import UserMaster
 from modules.base_module import BaseModule
 from serializer.auth_serializer import AuthSerializer
+from utils.myjwt import encode_jwt
 
 
 class AuthModule(BaseModule):
@@ -17,13 +18,11 @@ class AuthModule(BaseModule):
     model = UserMaster
     serializer = AuthSerializer
 
-    def login(self, *args, **kwargs: UserMaster) -> Response:
+    def login(self, *args, **kwargs: UserMaster) -> Any:
         """
         ログイン認証API
         """
         try:
-            print(request)
-
             email = kwargs.get("email", "")
             password: str = kwargs.get("password", "")
             password = hashlib.sha256(password.encode("utf-8")).hexdigest()
@@ -33,18 +32,11 @@ class AuthModule(BaseModule):
                     status=const.RESPONSE_UNAUTHORIZET,
                     response=json.dumps({"message": "認証情報が一致しません"}),
                 )
-            iat = int(time.time())
-            exp = iat + 3600
-            payload_data = {
-                "id": user.user_id,
-                "auth": user.auth_id,
-                "email": user.email,
-                "iat": iat,
-                "exp": exp,
-            }
-            self.update(**kwargs)
+            token = encode_jwt(user)
 
-            return Response(status=const.RESPONSE_OK, response=json.dumps(payload_data))
+            response = Response(status=const.RESPONSE_OK)
+            set_access_cookies(response, token)
+            return response
 
         except Exception:
             return Response(
