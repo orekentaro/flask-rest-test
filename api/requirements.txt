@@ -6,7 +6,7 @@ flake8
 psycopg2
 pytest
 requests
-SQLAlchemy
+SQLAlchemy==1.4.40
 debugpy
 isort
 pyjwt
