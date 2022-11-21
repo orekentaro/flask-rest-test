@@ -1,11 +1,10 @@
-from flask import Blueprint, request
+from flask import Blueprint
 from modules.auth_module import AuthModule
 
 auth = Blueprint("auth", __name__, url_prefix="/auth")
 
 
 @auth.route("/", methods=["POST"])
-def login():
+def post():
     """ログインルート"""
-    data = request.json
-    return AuthModule().login(**data)
+    return AuthModule().login()

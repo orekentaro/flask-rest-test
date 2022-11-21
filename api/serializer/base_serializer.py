@@ -1,3 +1,5 @@
+from typing import Union
+
 from models.base_model import BaseModel
 from sqlalchemy import delete as dl
 from sqlalchemy import insert
@@ -28,3 +30,17 @@ class BaseSerializer:
     ):
         stmt = dl(model).filter_by(fillter)
         return stmt
+
+    @classmethod
+    def serialize(clas, model: Union[BaseModel, list[BaseModel]]):
+        if type(model) != list:
+            raw_data = model.__dict__
+            raw_data.pop("_sa_instance_state")
+            return raw_data
+
+        raw_data_list = []
+        for data in BaseModel:
+            rd: dict = data.__dict__
+            rd.pop("_sa_instance_state")
+            raw_data_list.append(rd)
+        return raw_data_list

@@ -1,8 +1,7 @@
 import hashlib
-from typing import Any
 
 import utils.constans as const
-from flask import Response, json
+from flask import Response, json, request
 from flask_jwt_extended import set_access_cookies
 from models.user_master import UserMaster
 from modules.base_module import BaseModule
@@ -18,13 +17,17 @@ class AuthModule(BaseModule):
     model = UserMaster
     serializer = AuthSerializer
 
-    def login(self, *args, **kwargs: UserMaster) -> Any:
+    def login(self) -> Response:
         """
         ログイン認証API
         """
         try:
-            email = kwargs.get("email", "")
-            password: str = kwargs.get("password", "")
+            if not request.json:
+                raise Exception
+
+            r: UserMaster = request.json
+            email = r.get("email", "")
+            password: str = r.get("password", "")
             password = hashlib.sha256(password.encode("utf-8")).hexdigest()
             user: UserMaster = self.one_or_none(email=email, password=password)
             if user is None:
@@ -32,6 +35,7 @@ class AuthModule(BaseModule):
                     status=const.RESPONSE_UNAUTHORIZET,
                     response=json.dumps({"message": "認証情報が一致しません"}),
                 )
+            user = self.serialize()
             token = encode_jwt(user)
 
             response = Response(status=const.RESPONSE_OK)

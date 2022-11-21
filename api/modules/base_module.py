@@ -7,23 +7,27 @@ from sqlalchemy import select
 
 class BaseModule:
 
-    model: Optional[BaseModel] = None
+    model: TypeAlias = Optional[BaseModel]
     serializer: TypeAlias = Optional[BaseSerializer]
+    data: Optional[model] = None
 
     def all(self, *args, **kwargs):
         with session() as db_session:
             stmt = select(self.model).filter_by(**kwargs)
-            return db_session.execute(stmt).scalars().all()
+            self.data = db_session.execute(stmt).scalars().all()
+            return self.data
 
     def one_or_none(self, *args, **kwargs):
         with session() as db_session:
             stmt = select(self.model).filter_by(**kwargs)
-            return db_session.execute(stmt).scalars().one_or_none()
+            self.data = db_session.execute(stmt).scalars().one_or_none()
+            return self.data
 
     def first(self, *args, **kwargs):
         with session() as db_session:
             stmt = select(self.model).filter_by(**kwargs)
-            return db_session.execute(stmt).scalars().first()
+            self.data = db_session.execute(stmt).scalars().first()
+            return self.data
 
     def save(self, *args, **kwargs):
         with session() as db_session, db_session.begin():
@@ -37,5 +41,8 @@ class BaseModule:
 
     def delete(self, fillter):
         with session() as db_session, db_session.begin():
-            stmt = self.serializer.update(self.model, fillter)
+            stmt = self.serializer.delete(self.model, fillter)
             db_session.execute(stmt)
+
+    def serialize(self):
+        return self.serializer.serialize(self.data)
