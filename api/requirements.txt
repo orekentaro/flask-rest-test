@@ -10,3 +10,6 @@ SQLAlchemy==1.4.40
 debugpy
 isort
 pyjwt
+pytest-mock
+pytest-cov
+flask_jwt_extended

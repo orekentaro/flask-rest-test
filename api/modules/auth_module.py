@@ -22,18 +22,21 @@ class AuthModule(BaseModule):
         ログイン認証API
         """
         try:
-            if not request.json:
-                raise Exception
+            if request.json is None:
+                raise Exception(const.REQUEST_PARM_ERROR)
 
             r: UserMaster = request.json
-            email = r.get("email", "")
-            password: str = r.get("password", "")
+
+            email = r.get("email")
+            password: str = r.get("password")
+            if email is None or password is None:
+                raise Exception(const.REQUEST_PARM_ERROR)
             password = hashlib.sha256(password.encode("utf-8")).hexdigest()
-            user: UserMaster = self.one_or_none(email=email, password=password)
+            user = self.one_or_none(email=email, password=password)
             if user is None:
                 return Response(
                     status=const.RESPONSE_UNAUTHORIZET,
-                    response=json.dumps({"message": "認証情報が一致しません"}),
+                    response=json.dumps({"msg": "認証情報が一致しません"}),
                 )
             user = self.serialize()
             token = encode_jwt(user)
@@ -42,8 +45,8 @@ class AuthModule(BaseModule):
             set_access_cookies(response, token)
             return response
 
-        except Exception:
+        except Exception as e:
             return Response(
                 status=const.RESPONSE_ERROR,
-                response=json.dumps({"massage": "予期せぬエラーが発生しました"}),
+                response=json.dumps({"msg": f"予期せぬエラーが発生しました:[{e}]"}),
             )

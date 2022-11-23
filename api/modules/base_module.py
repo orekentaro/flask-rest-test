@@ -1,48 +1,48 @@
-from typing import Optional, TypeAlias
+from typing import Any, Optional, TypeAlias, Union
 
 from models.base_model import BaseModel, session
 from serializer.base_serializer import BaseSerializer
-from sqlalchemy import select
+from sqlalchemy import delete, insert, select, update
 
 
 class BaseModule:
 
-    model: TypeAlias = Optional[BaseModel]
-    serializer: TypeAlias = Optional[BaseSerializer]
+    model: TypeAlias = BaseModel
+    serializer: TypeAlias = BaseSerializer
     data: Optional[model] = None
 
-    def all(self, *args, **kwargs):
+    def all(self, *args, **kwargs) -> Optional[model]:
         with session() as db_session:
             stmt = select(self.model).filter_by(**kwargs)
             self.data = db_session.execute(stmt).scalars().all()
             return self.data
 
-    def one_or_none(self, *args, **kwargs):
+    def one_or_none(self, *args, **kwargs) -> Optional[model]:
         with session() as db_session:
             stmt = select(self.model).filter_by(**kwargs)
             self.data = db_session.execute(stmt).scalars().one_or_none()
             return self.data
 
-    def first(self, *args, **kwargs):
+    def first(self, *args, **kwargs) -> Optional[model]:
         with session() as db_session:
             stmt = select(self.model).filter_by(**kwargs)
             self.data = db_session.execute(stmt).scalars().first()
             return self.data
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         with session() as db_session, db_session.begin():
-            stmt = self.serializer.save(self.model, **kwargs)
+            stmt = insert(self.model).values(**kwargs)
             db_session.execute(stmt)
 
-    def update(self, fillter, *args, **kwargs):
+    def path(self, fillter: dict[str, Any], *args, **kwargs) -> None:
         with session() as db_session, db_session.begin():
-            stmt = self.serializer.update(self.model, fillter, **kwargs)
+            stmt = update(self.model).values(**kwargs).filter_by(fillter)
             db_session.execute(stmt)
 
-    def delete(self, fillter):
+    def destroy(self, fillter: dict[str, Any]) -> None:
         with session() as db_session, db_session.begin():
-            stmt = self.serializer.delete(self.model, fillter)
+            stmt = delete(self.model).filter_by(fillter)
             db_session.execute(stmt)
 
-    def serialize(self):
+    def serialize(self) -> Union[dict[str, Any], list[dict[str, Any]]]:
         return self.serializer.serialize(self.data)

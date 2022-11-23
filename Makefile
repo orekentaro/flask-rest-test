@@ -43,3 +43,6 @@ reset:
 run:
 	make run_docker
 	make run_client
+
+test_api:
+	docker exec -it api pytest --cov=. --cov-report=xml  ${ARG}
