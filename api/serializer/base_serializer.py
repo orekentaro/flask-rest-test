@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any, Optional, Union
 
 from models.base_model import BaseModel
 
@@ -6,7 +6,7 @@ from models.base_model import BaseModel
 class BaseSerializer:
     @classmethod
     def serialize(
-        clas, model: Union[BaseModel, list[BaseModel]]
+        clas, model: Optional[Union[BaseModel, list[BaseModel]]]
     ) -> Union[dict[str, Any], list[dict[str, Any]]]:
         if type(model) != list:
             raw_data = model.__dict__
@@ -14,7 +14,7 @@ class BaseSerializer:
             return raw_data
 
         raw_data_list = []
-        for data in BaseModel:
+        for data in model:
             rd: dict = data.__dict__
             rd.pop("_sa_instance_state")
             raw_data_list.append(rd)

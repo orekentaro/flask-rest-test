@@ -1,4 +1,5 @@
 import hashlib
+from typing import Any
 
 import utils.constans as const
 from flask import Response, json, request
@@ -16,6 +17,9 @@ class AuthModule(BaseModule):
 
     model = UserMaster
     serializer = AuthSerializer
+
+    def serialize(self) -> dict[str, Any]:
+        return self.serializer.serialize(self.data)
 
     def login(self) -> Response:
         """

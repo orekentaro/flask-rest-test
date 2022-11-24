@@ -1,4 +1,4 @@
-from typing import Any, Optional, TypeAlias, Union
+from typing import Any, Optional, TypeAlias
 
 from models.base_model import BaseModel, session
 from serializer.base_serializer import BaseSerializer
@@ -44,5 +44,5 @@ class BaseModule:
             stmt = delete(self.model).filter_by(fillter)
             db_session.execute(stmt)
 
-    def serialize(self) -> Union[dict[str, Any], list[dict[str, Any]]]:
-        return self.serializer.serialize(self.data)
+    def serialize(self) -> dict[str, Any]:
+        return {"data": self.serializer.serialize(self.data)}

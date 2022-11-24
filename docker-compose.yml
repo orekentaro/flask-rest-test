@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: ./api/Dockerfile
     volumes:
-      - './api:/app:cached'
+      - './api:/Users/nagatokentarou/recruit-management/api:cached'
     ports:
       - "8080:8080"
       - "5678:5678"
