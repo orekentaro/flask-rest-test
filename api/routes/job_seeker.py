@@ -12,11 +12,11 @@ def get() -> Response:
     return JobSeekerModule().get()
 
 
-@job_seeker.route("/<int:job_id>", methods=["GET"])
+@job_seeker.route("/<int:id>", methods=["GET"])
 @jwt_required()
-def get_one(job_id) -> Response:
+def get_one(id) -> Response:
     """ログインルート"""
-    return JobSeekerModule().get(job_id)
+    return JobSeekerModule().get(id)
 
 
 # TODO: 他のメソッドを書く

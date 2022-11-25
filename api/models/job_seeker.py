@@ -8,7 +8,7 @@ class JobSeeker(BaseModel):
     """求職者情報"""
 
     __tablename__ = "job_seeker"
-    job_id = Column("job_id", Integer, nullable=False, primary_key=True)
+    id = Column("id", Integer, nullable=False, primary_key=True)
     name = Column("name", String(200), nullable=False)
     gender = Column("gender", String(1))
     birthday = Column("birthday", String(10))
@@ -16,7 +16,7 @@ class JobSeeker(BaseModel):
     ads_id = Column(
         "ads_id",
         Integer,
-        ForeignKey("job_ads.ads_id", onupdate="CASCADE", ondelete="CASCADE"),
+        ForeignKey("job_ads.id", onupdate="CASCADE", ondelete="CASCADE"),
     )
     is_active = Column("is_active", Boolean, default=True, nullable=False)
 

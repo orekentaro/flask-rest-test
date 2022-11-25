@@ -8,11 +8,11 @@ class Memo(BaseModel):
     """求職者情報"""
 
     __tablename__ = "memo"
-    memo_id = Column("memo_id", Integer, nullable=False, primary_key=True)
+    id = Column("id", Integer, nullable=False, primary_key=True)
     job_id = Column(
         "job_id",
         Integer,
-        ForeignKey("job_seeker.job_id", onupdate="CASCADE", ondelete="CASCADE"),
+        ForeignKey("job_seeker.id", onupdate="CASCADE", ondelete="CASCADE"),
     )
     memo = Column("memo", Text, nullable=False)
 

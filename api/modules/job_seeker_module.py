@@ -15,10 +15,10 @@ class JobSeekerModule(BaseModule):
     model = JobSeeker
     serializer = JobSeekerSerializer
 
-    def get(self, job_id: Optional[int] = None) -> Response:
+    def get(self, id: Optional[int] = None) -> Response:
         condition = dict(request.args)
-        if type(job_id) == int:
-            condition.update({"job_id": str(job_id)})
+        if type(id) == int:
+            condition.update({"id": str(id)})
 
         self.all(**condition)
         res = self.serialize()

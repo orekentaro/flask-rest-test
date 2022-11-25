@@ -8,7 +8,7 @@ class AuthMaster(BaseModel):
     """権限マスタ"""
 
     __tablename__ = "auth_master"
-    auth_id = Column("auth_id", String(200), nullable=False, primary_key=True)
+    id = Column("id", String(200), nullable=False, primary_key=True)
     auth = Column("auth", String(200), nullable=False)
 
 

@@ -8,9 +8,7 @@ class ProgressResult(BaseModel):
     """進捗結果マスタ"""
 
     __tablename__ = "progress_result"
-    progress_result_id = Column(
-        "progress_result_id", Integer, nullable=False, primary_key=True
-    )
+    id = Column("id", Integer, nullable=False, primary_key=True)
     title = Column("title", Text, nullable=False)
 
 

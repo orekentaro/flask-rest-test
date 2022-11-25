@@ -8,7 +8,7 @@ class UserMaster(BaseModel):
     """ユーザーテーブル"""
 
     __tablename__ = "user_master"
-    user_id = Column("user_id", Integer, nullable=False, primary_key=True)
+    id = Column("id", Integer, nullable=False, primary_key=True)
     name = Column("name", String(200), nullable=False)
     email = Column("email", String(256), nullable=False, unique=True)
     password = Column("password", String(100), nullable=False)
