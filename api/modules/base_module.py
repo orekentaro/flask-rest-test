@@ -1,5 +1,7 @@
 from typing import Any, Optional, TypeAlias
 
+import utils.constans as const
+from flask import Response, json, request
 from models.base_model import BaseModel, session
 from serializer.base_serializer import BaseSerializer
 from sqlalchemy import delete, insert, select, update
@@ -10,6 +12,15 @@ class BaseModule:
     model: TypeAlias = BaseModel
     serializer: TypeAlias = BaseSerializer
     data: Optional[model] = None
+
+    def get(self, id: Optional[int] = None) -> Response:
+        condition = dict(request.args)
+        if type(id) == int:
+            condition.update({"id": str(id)})
+
+        self.all(**condition)
+        res = self.serialize()
+        return Response(status=const.RESPONSE_OK, response=json.dumps(res))
 
     def all(self, *args, **kwargs) -> Optional[model]:
         with session() as db_session:

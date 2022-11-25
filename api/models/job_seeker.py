@@ -1,6 +1,7 @@
 import sys
+from typing import Any
 
-from models.base_model import ENGINE, BaseModel
+from models.base_model import ENGINE, BaseModel, session
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 
 
@@ -19,6 +20,10 @@ class JobSeeker(BaseModel):
         ForeignKey("job_ads.id", onupdate="CASCADE", ondelete="CASCADE"),
     )
     is_active = Column("is_active", Boolean, default=True, nullable=False)
+
+
+def get_job_seeker(id: int) -> dict[str, Any]:
+    return session().get(JobSeeker, id)
 
 
 def create_job_seeker(args):
