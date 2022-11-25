@@ -16,16 +16,10 @@ class JobSeekerModule(BaseModule):
     serializer = JobSeekerSerializer
 
     def get(self, job_id: Optional[int] = None) -> Response:
-        try:
-            condition = dict(request.args)
-            if type(job_id) == int:
-                condition.update({"job_id": str(job_id)})
+        condition = dict(request.args)
+        if type(job_id) == int:
+            condition.update({"job_id": str(job_id)})
 
-            self.all(**condition)
-            res = self.serialize()
-            return Response(status=const.RESPONSE_OK, response=json.dumps(res))
-        except Exception as e:
-            return Response(
-                status=const.RESPONSE_ERROR,
-                response=json.dumps({"msg": f"予期せぬエラーが発生しました:[{e}]"}),
-            )
+        self.all(**condition)
+        res = self.serialize()
+        return Response(status=const.RESPONSE_OK, response=json.dumps(res))
