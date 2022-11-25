@@ -14,7 +14,9 @@ class ProgressMaster(BaseModel):
 
 
 def get_progress_master(id: int) -> dict[str, Any]:
-    return session().get(ProgressMaster, id)
+    data = session().get(ProgressMaster, id).__dict__
+    data.pop("_sa_instance_state")
+    return data
 
 
 def create_progress_master(args):

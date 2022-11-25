@@ -19,7 +19,9 @@ class Memo(BaseModel):
 
 
 def get_memo(id: int) -> dict[str, Any]:
-    return session().get(Memo, id)
+    data = session().get(Memo, id).__dict__
+    data.pop("_sa_instance_state")
+    return data
 
 
 def create_memo(args):

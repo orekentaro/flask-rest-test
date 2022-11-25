@@ -15,7 +15,9 @@ class JobMaster(BaseModel):
 
 
 def get_job_master(id: int) -> dict[str, Any]:
-    return session().get(JobMaster, id)
+    data = session().get(JobMaster, id).__dict__
+    data.pop("_sa_instance_state")
+    return data
 
 
 def create_job_master(args):

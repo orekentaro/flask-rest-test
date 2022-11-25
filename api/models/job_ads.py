@@ -24,7 +24,9 @@ class JobAds(BaseModel):
 
 
 def get_job_ads(id: int) -> dict[str, Any]:
-    return session().get(JobAds, id)
+    data = session().get(JobAds, id).__dict__
+    data.pop("_sa_instance_state")
+    return data
 
 
 def create_job_ads(args):

@@ -35,7 +35,9 @@ class ProgressInfo(BaseModel):
 
 
 def get_progress_info(id: int) -> dict[str, Any]:
-    return session().get(ProgressInfo, id)
+    data = session().get(ProgressInfo, id).__dict__
+    data.pop("_sa_instance_state")
+    return data
 
 
 def create_progress_info(args):

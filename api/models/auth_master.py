@@ -14,7 +14,9 @@ class AuthMaster(BaseModel):
 
 
 def get_auth(id: int) -> dict[str, Any]:
-    return session().get(AuthMaster, id).__dict__
+    data = session().get(AuthMaster, id).__dict__
+    data.pop("_sa_instance_state")
+    return data
 
 
 def create_auth(args):

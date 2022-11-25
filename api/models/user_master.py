@@ -20,7 +20,9 @@ class UserMaster(BaseModel):
 
 
 def get_user(id: int) -> dict[str, Any]:
-    return session().get(UserMaster, id)
+    data = session().get(UserMaster, id).__dict__
+    data.pop("_sa_instance_state")
+    return data
 
 
 def create_user(args):

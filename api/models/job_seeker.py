@@ -23,7 +23,9 @@ class JobSeeker(BaseModel):
 
 
 def get_job_seeker(id: int) -> dict[str, Any]:
-    return session().get(JobSeeker, id)
+    data = session().get(JobSeeker, id).__dict__
+    data.pop("_sa_instance_state")
+    return data
 
 
 def create_job_seeker(args):
