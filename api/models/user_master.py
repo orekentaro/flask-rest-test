@@ -1,7 +1,6 @@
 import sys
-from typing import Any
 
-from models.base_model import ENGINE, BaseModel, session
+from models.base_model import ENGINE, BaseModel
 from sqlalchemy import BigInteger, Boolean, Column, Integer, String
 
 
@@ -17,12 +16,6 @@ class UserMaster(BaseModel):
     miss_count = Column("miss_count", BigInteger, server_default="0", nullable=False)
     is_init = Column("init_flag", Boolean, default=False, nullable=False)
     auth_id = Column("auth_id", Integer, nullable=False)
-
-
-def get_user(id: int) -> dict[str, Any]:
-    data = session().get(UserMaster, id).__dict__
-    data.pop("_sa_instance_state")
-    return data
 
 
 def create_user(args):

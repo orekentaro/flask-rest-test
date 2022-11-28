@@ -1,7 +1,6 @@
 import sys
-from typing import Any
 
-from models.base_model import ENGINE, BaseModel, session
+from models.base_model import ENGINE, BaseModel
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, Text
 
 
@@ -32,12 +31,6 @@ class ProgressInfo(BaseModel):
         Integer,
         ForeignKey("progress_result.id", onupdate="CASCADE", ondelete="CASCADE"),
     )
-
-
-def get_progress_info(id: int) -> dict[str, Any]:
-    data = session().get(ProgressInfo, id).__dict__
-    data.pop("_sa_instance_state")
-    return data
 
 
 def create_progress_info(args):

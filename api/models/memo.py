@@ -1,7 +1,6 @@
 import sys
-from typing import Any
 
-from models.base_model import ENGINE, BaseModel, session
+from models.base_model import ENGINE, BaseModel
 from sqlalchemy import Column, ForeignKey, Integer, Text
 
 
@@ -10,18 +9,12 @@ class Memo(BaseModel):
 
     __tablename__ = "memo"
     id = Column("id", Integer, nullable=False, primary_key=True)
-    job_id = Column(
-        "job_id",
+    job_seeker_id = Column(
+        "job_seeker_id",
         Integer,
         ForeignKey("job_seeker.id", onupdate="CASCADE", ondelete="CASCADE"),
     )
     memo = Column("memo", Text, nullable=False)
-
-
-def get_memo(id: int) -> dict[str, Any]:
-    data = session().get(Memo, id).__dict__
-    data.pop("_sa_instance_state")
-    return data
 
 
 def create_memo(args):

@@ -1,7 +1,6 @@
 import sys
-from typing import Any
 
-from models.base_model import ENGINE, BaseModel, session
+from models.base_model import ENGINE, BaseModel
 from sqlalchemy import Column, Integer, String
 
 
@@ -11,12 +10,6 @@ class AuthMaster(BaseModel):
     __tablename__ = "auth_master"
     id = Column("id", Integer, nullable=False, primary_key=True)
     auth = Column("auth", String(200), nullable=False)
-
-
-def get_auth(id: int) -> dict[str, Any]:
-    data = session().get(AuthMaster, id).__dict__
-    data.pop("_sa_instance_state")
-    return data
 
 
 def create_auth(args):

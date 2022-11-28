@@ -24,7 +24,7 @@ def create_table():
 
 def _create_data():
     with session() as db_session:
-        auth = AuthMaster(id=1, auth="admin", changer="create")
+        auth = AuthMaster(auth="admin", changer="create")
         db_session.add(auth)
 
         user = UserMaster(
@@ -121,7 +121,6 @@ def _create_data():
         db_session.add(failure)
 
         job_master = JobMaster(
-            id=1,
             job_offer_name="テスト求人",
             subscription_cost=100000,
             changer="create",
@@ -131,10 +130,9 @@ def _create_data():
         db_session.commit()
 
         job_ads = JobAds(
-            id=1,
             job_master_id=1,
-            publication_start="20220401",
-            publication_end="20220901",
+            publication_start="2022-04-01",
+            publication_end="2022-09-01",
             title="未経験可",
             contents="エンジニア募集中",
             views=200,
@@ -146,10 +144,9 @@ def _create_data():
         db_session.commit()
 
         job_seeker = JobSeeker(
-            id=1,
             name="テスト太郎",
             gender="m",
-            birthday="19930218",
+            birthday="1993-02-18",
             career="2021年テスト株式会社入社",
             ads_id=1,
             changer="create",
@@ -157,7 +154,6 @@ def _create_data():
         db_session.add(job_seeker)
 
         progress_info = ProgressInfo(
-            id=1,
             user_id=1,
             job_id=1,
             progress_info="応募がありました",
@@ -168,7 +164,6 @@ def _create_data():
         db_session.add(progress_info)
 
         progress_info = ProgressInfo(
-            id=2,
             user_id=1,
             job_id=1,
             progress_info="",
@@ -178,7 +173,7 @@ def _create_data():
         db_session.add(progress_info)
 
         memo = Memo(
-            job_id=1,
+            job_seeker_id=1,
             memo="ちゃんと勉強してそう",
             changer=1,
         )

@@ -10,4 +10,4 @@ def encode_jwt(user: dict[str, Any]) -> str:
         "auth": user.get("auth_name", ""),
         "email": user.get("email", ""),
     }
-    return create_access_token(identity=json.dumps(payload_data), fresh=True)
+    return create_access_token(identity=json.dumps(payload_data))

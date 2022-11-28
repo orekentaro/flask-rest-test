@@ -20,3 +20,9 @@ def get_one(id) -> Response:
 
 
 # TODO: 他のメソッドを書く
+@job_seeker.route("/", methods=["POST"])
+@jwt_required()
+def post() -> Response:
+    """ログインルート"""
+
+    return JobSeekerModule().post()

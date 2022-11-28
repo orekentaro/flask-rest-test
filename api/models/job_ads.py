@@ -1,7 +1,6 @@
 import sys
-from typing import Any
 
-from models.base_model import ENGINE, BaseModel, session
+from models.base_model import ENGINE, BaseModel
 from sqlalchemy import BigInteger, Column, ForeignKey, Integer, String, Text
 
 
@@ -21,12 +20,6 @@ class JobAds(BaseModel):
     contents = Column("contents", Text)
     views = Column("views", BigInteger)
     cost = Column("cost", BigInteger)
-
-
-def get_job_ads(id: int) -> dict[str, Any]:
-    data = session().get(JobAds, id).__dict__
-    data.pop("_sa_instance_state")
-    return data
 
 
 def create_job_ads(args):

@@ -17,6 +17,5 @@ app.before_request(mw.before_request)
 app.after_request(mw.after_request)
 app.register_error_handler(Exception, mw.exception_handler)
 
-
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8080)

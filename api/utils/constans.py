@@ -7,3 +7,6 @@ RESPONSE_NOTFOUND: Final[int] = 404
 RESPONSE_ERROR: Final[int] = 500
 
 REQUEST_PARM_ERROR: Final[str] = "リクエストパラメーターエラー"
+GENDER: Final[dict[str, str]] = {"m": "男性", "f": "女性"}
+
+NOT_AUTH_ROUTE: Final[list[str]] = ["auth.post"]

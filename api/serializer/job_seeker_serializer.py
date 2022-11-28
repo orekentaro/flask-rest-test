@@ -1,18 +1,24 @@
 from typing import Any, Union
 
-from models.job_ads import get_job_ads
-from models.job_master import get_job_master
+import utils.constans as const
+from models.job_ads import JobAds
+from models.job_master import JobMaster
 from models.job_seeker import JobSeeker
+from models.memo import Memo
 from serializer.base_serializer import BaseSerializer
+from utils.get_data import get_one, get_relation, model_to_dict
 
 
 def _make_data(job_seeker: JobSeeker) -> dict[str, Any]:
-    ads = get_job_ads(job_seeker.ads_id)
-    job_master = get_job_master(ads.get("job_master_id", {}))
+    ads = get_one(JobAds, job_seeker.ads_id)
+    job_master = get_one(JobMaster, ads.get("job_master_id", {}))
     ads["job_master"] = job_master
-    job_seeker_data = job_seeker.__dict__
-    job_seeker_data.pop("_sa_instance_state")
+    del ads["job_master_id"]
+    job_seeker_data = model_to_dict(job_seeker)
     job_seeker_data["ads"] = ads
+    del job_seeker_data["ads_id"]
+    job_seeker_data.update({"gender": const.GENDER[job_seeker_data["gender"]]})
+    job_seeker_data["memo"] = get_relation(Memo, {"job_seeker_id": job_seeker.id})
     return job_seeker_data
 
 

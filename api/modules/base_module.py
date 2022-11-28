@@ -22,6 +22,11 @@ class BaseModule:
         res = self.serialize()
         return Response(status=const.RESPONSE_OK, response=json.dumps(res))
 
+    def post(self):
+        r = request.json
+        self.save(**r)
+        return Response(status=const.RESPONSE_OK, response=json.dumps(r))
+
     def all(self, *args, **kwargs) -> Optional[model]:
         with session() as db_session:
             stmt = select(self.model).filter_by(**kwargs)
@@ -45,7 +50,7 @@ class BaseModule:
             stmt = insert(self.model).values(**kwargs)
             db_session.execute(stmt)
 
-    def path(self, fillter: dict[str, Any], *args, **kwargs) -> None:
+    def patch(self, fillter: dict[str, Any], *args, **kwargs) -> None:
         with session() as db_session, db_session.begin():
             stmt = update(self.model).values(**kwargs).filter_by(fillter)
             db_session.execute(stmt)
