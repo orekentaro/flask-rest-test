@@ -19,8 +19,8 @@ class ProgressInfo(BaseModel):
         Integer,
         ForeignKey("user_master.id", onupdate="CASCADE", ondelete="CASCADE"),
     )
-    job_id = Column(
-        "job_id",
+    job_seeker_id = Column(
+        "job_seeker_id",
         Integer,
         ForeignKey("job_seeker.id", onupdate="CASCADE", ondelete="CASCADE"),
     )

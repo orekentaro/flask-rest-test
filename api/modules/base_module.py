@@ -15,10 +15,13 @@ class BaseModule:
 
     def get(self, id: Optional[int] = None) -> Response:
         condition = dict(request.args)
-        if type(id) == int:
+        if id is not None:
             condition.update({"id": str(id)})
-
-        self.all(**condition)
+            self.one_or_none(**condition)
+            if self.data is None:
+                raise Exception("データが存在しません。")
+        else:
+            self.all(**condition)
         res = self.serialize()
         return Response(status=const.RESPONSE_OK, response=json.dumps(res))
 
