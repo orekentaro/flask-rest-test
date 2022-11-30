@@ -156,6 +156,7 @@ def _create_data():
         progress_info = ProgressInfo(
             user_id=1,
             job_seeker_id=1,
+            progress_master_id=1,
             progress_info="応募がありました",
             schedule=dt.now(),
             result="1",
@@ -167,6 +168,7 @@ def _create_data():
             user_id=1,
             job_seeker_id=1,
             progress_info="",
+            progress_master_id=2,
             result=2,
             changer="create",
         )
