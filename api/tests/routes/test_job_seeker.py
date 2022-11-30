@@ -25,7 +25,7 @@ class TestJobSeekerModule(BaseTest):
             j = res.json
             data = j.get("data", [])
             assert type(data) == dict
-            assert data.get("progres")
+            assert data.get("progress_info")
             assert data.get("memo")
             ads = data.get("ads")
             assert ads
