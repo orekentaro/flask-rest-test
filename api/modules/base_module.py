@@ -64,4 +64,4 @@ class BaseModule:
             db_session.execute(stmt)
 
     def serialize(self) -> dict[str, Any]:
-        return {"data": self.serializer.serialize(self.data)}
+        return {"data": self.serializer().data(self.data)}
