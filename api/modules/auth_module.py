@@ -18,9 +18,6 @@ class AuthModule(BaseModule):
     model = UserMaster
     serializer = AuthSerializer
 
-    def serialize(self) -> dict[str, Any]:
-        return self.serializer.serialize(self.data)
-
     def login(self) -> Response:
         """
         ログイン認証API
