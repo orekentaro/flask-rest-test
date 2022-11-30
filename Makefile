@@ -11,7 +11,7 @@ install_node:
 	npm install --frozen-lockfile -C client
 
 run_docker:
-	docker compose up -d
+	docker compose up
 
 run_build:
 	docker compose up -d --build
@@ -30,19 +30,21 @@ del:
 	make dalete_image
 	make data_crear
 
-start:
-	make run_build
-	make install_node
-	make create_data
-	make run_client
-
 reset:
 	make del
-	make start
+	make init
+
+run_init: run_build install_node create_data
+
+init:
+	make -j run_init
+	make down
+	make run
 
 run:
-	make run_docker
-	make run_client
+	make -j start
+
+start: run_client run_docker
 
 test_api:
 	docker exec -it api pytest --cov=. --cov-report=xml  ${ARG}
