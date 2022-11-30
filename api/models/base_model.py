@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-from sqlalchemy import Boolean, Column, DateTime, String, create_engine
+from sqlalchemy import Boolean, Column, DateTime, Integer, create_engine
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import Session
 
@@ -43,7 +43,7 @@ class Mixin(object):
 
     @declared_attr
     def changer(cls):
-        return Column("changer", String(200), nullable=False)
+        return Column("changer", Integer, nullable=False)
 
 
 BaseModel = declarative_base(cls=Mixin)

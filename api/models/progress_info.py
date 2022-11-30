@@ -9,8 +9,8 @@ class ProgressInfo(BaseModel):
 
     __tablename__ = "progress_info"
     id = Column("id", Integer, nullable=False, primary_key=True)
-    progress_id = Column(
-        "progress_id",
+    progress_master_id = Column(
+        "progress_master_id",
         Integer,
         ForeignKey("progress_master.id", onupdate="CASCADE", ondelete="CASCADE"),
     )
