@@ -16,3 +16,4 @@ flask_jwt_extended
 poetry
 mypy
 black
+pyproject-flake8

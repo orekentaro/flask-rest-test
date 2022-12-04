@@ -13,7 +13,7 @@ COPY ./api/requirements.txt ${PROJECT_ROOTDIR}/
 COPY ./api ${PROJECT_ROOTDIR}/
 RUN pip install -r requirements.txt
 
-# RUN poetry config virtualenvs.create false && poetry install
+RUN poetry config virtualenvs.create false && poetry install --no-dev
 
 
 CMD ["scripts/wait-for-it.sh", "db:5432", "--", "python", "-m", "debugpy", "--listen", "0.0.0.0:5678", "-m", "app",  "--wait-for-client", "--multiprocess", "-m", "flask", "run", "--host", "0.0.0.0", "--port", "8080" ]
