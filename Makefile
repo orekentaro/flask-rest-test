@@ -37,7 +37,7 @@ reset:
 run_init: run_build install_node create_data
 
 init:
-	make -j run_init
+	make run_init
 	make down
 	make run
 
