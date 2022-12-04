@@ -1,9 +1,7 @@
 import traceback
 
 import utils.constans as const
-from flask import Response, current_app, json, jsonify, logging, request
-from flask_jwt_extended import decode_token
-from werkzeug.datastructures import EnvironHeaders
+from flask import Response, current_app, jsonify, logging, request
 
 
 def before_request():
@@ -34,4 +32,15 @@ def exception_handler(ex):
 
     # 予期せぬ例外発生時
     logger.error(traceback.format_exc())
-    return jsonify({"msg": f"予期せぬエラーが発生しました:[{ex}]"}), const.RESPONSE_ERROR
+    return jsonify({"msg": f"予期せぬエラーが発生しました:{ex}"}), const.RESPONSE_ERROR
+
+
+def value_error_handler(ex):
+    """
+    共通例外処理 ValueError
+    """
+    logger = logging.create_logger(current_app)
+
+    # 予期せぬ例外発生時
+    logger.error(traceback.format_exc())
+    return jsonify({"msg": f"バリデーションエラー:{ex}"}), const.RESPONSE_BAD_REQUEST

@@ -1,3 +1,4 @@
+import re
 from typing import Any, Union
 
 import utils.constans as const
@@ -11,6 +12,8 @@ from serializer.progress_info_serializer import ProgressInfoSerializer
 
 
 class JobSeekerSerializer(BaseSerializer):
+    required = ["name", "ads_id"]
+
     def data(self, job_seeker: Union[JobSeeker, list[JobSeeker]]) -> Union[dict[str, Any], list]:  # type: ignore[override]
         if type(job_seeker) == list:
             return_list = []
@@ -20,6 +23,23 @@ class JobSeekerSerializer(BaseSerializer):
             return return_list
         else:
             return self._make_detail(job_seeker)  # type: ignore[arg-type]
+
+    def is_valid(self, to_update: bool = False, *args, **kwargs):
+        if not to_update:
+            for i in self.required:
+                if kwargs.get(i) is None:
+                    raise ValueError(f"項目'{i}'は必須です")
+
+        if gender := kwargs.get("gender"):
+            if const.GENDER.get(gender) is None:
+                raise ValueError("genderは'm'か'f'しか登録できません")
+
+        if birthday := kwargs.get("birthday"):
+            if not re.match(const.DATE_PATTERN, birthday):
+                raise ValueError("生年月日が不正です")
+
+        if self._get_one(JobAds, kwargs.get("ads_id", 0), to_model=True) is None:
+            raise ValueError("該当の求人広告は存在しません")
 
     def _make_list(self, job_seeker: JobSeeker) -> dict[str, Any]:
         ads = JobAdsSerializer().data(

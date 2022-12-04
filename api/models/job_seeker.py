@@ -17,6 +17,7 @@ class JobSeeker(BaseModel):
         "ads_id",
         Integer,
         ForeignKey("job_ads.id", onupdate="CASCADE", ondelete="CASCADE"),
+        nullable=False,
     )
     is_active = Column("is_active", Boolean, default=True, nullable=False)
 

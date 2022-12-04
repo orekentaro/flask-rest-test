@@ -4,7 +4,7 @@ import utils.constans as const
 from flask import Response, json, request
 from models.base_model import BaseModel, session
 from serializer.base_serializer import BaseSerializer
-from sqlalchemy import delete, insert, select, update
+from sqlalchemy import insert, select, update
 
 
 class BaseModule:
@@ -27,8 +27,27 @@ class BaseModule:
 
     def post(self):
         r = request.json
+        self.serializer().is_valid(**r)
         self.save(**r)
-        return Response(status=const.RESPONSE_OK, response=json.dumps(r))
+        return Response(status=const.RESPONSE_OK)
+
+    def patch(self, id: int):
+        if id is None:
+            return Response(status=const.RESPONSE_BAD_REQUEST)
+
+        r = request.json
+        if r is None:
+            return Response(status=const.RESPONSE_BAD_REQUEST)
+
+        self.update({"id": id}, **r)
+        return Response(status=const.RESPONSE_OK)
+
+    def delete(self, id: int):
+        if id is None:
+            return Response(status=const.RESPONSE_BAD_REQUEST)
+
+        self.destroy({"id": id})
+        return Response(status=const.RESPONSE_OK)
 
     def all(self, *args, **kwargs) -> Optional[model]:
         with session() as db_session:
@@ -53,14 +72,14 @@ class BaseModule:
             stmt = insert(self.model).values(**kwargs)
             db_session.execute(stmt)
 
-    def patch(self, fillter: dict[str, Any], *args, **kwargs) -> None:
+    def update(self, fillter: dict[str, Any], *args, **kwargs) -> None:
         with session() as db_session, db_session.begin():
-            stmt = update(self.model).values(**kwargs).filter_by(fillter)
+            stmt = update(self.model).values(**kwargs).filter_by(**fillter)
             db_session.execute(stmt)
 
     def destroy(self, fillter: dict[str, Any]) -> None:
         with session() as db_session, db_session.begin():
-            stmt = delete(self.model).filter_by(fillter)
+            stmt = update(self.model).values(is_delete=True).filter_by(**fillter)
             db_session.execute(stmt)
 
     def serialize(self) -> dict[str, Any]:

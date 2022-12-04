@@ -1,10 +1,13 @@
-from typing import Any, Optional, Union
+from typing import Any, Optional, TypeAlias, Union
 
 from models.base_model import BaseModel, session
 from sqlalchemy import select
 
 
 class BaseSerializer:
+    required: TypeAlias = list[str]
+    read_onry: TypeAlias = list[str]
+
     def data(
         self, model: Optional[Union[BaseModel, list[BaseModel]]]
     ) -> Union[dict[str, Any], list[dict[str, Any]]]:
@@ -18,9 +21,12 @@ class BaseSerializer:
             raw_data_list.append(rd)
         return raw_data_list
 
+    def is_valid(self, to_update: bool = False, *args, **kwargs):
+        pass
+
     def _get_one(
         self, model: BaseModel, id: int, to_model: bool = False
-    ) -> dict[str, Any]:
+    ) -> Optional[dict[str, Any]]:
         if to_model:
             return session().get(model, id)
         return self._model_to_dict(session().get(model, id))

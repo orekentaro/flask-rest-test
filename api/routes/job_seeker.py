@@ -8,21 +8,28 @@ job_seeker = Blueprint("job_seeker", __name__, url_prefix="/job_seeker")
 @job_seeker.route("/", methods=["GET"])
 @jwt_required()
 def get() -> Response:
-    """ログインルート"""
     return JobSeekerModule().get()
 
 
 @job_seeker.route("/<int:id>", methods=["GET"])
 @jwt_required()
 def get_one(id) -> Response:
-    """ログインルート"""
     return JobSeekerModule().get(id)
 
 
-# TODO: 他のメソッドを書く
 @job_seeker.route("/", methods=["POST"])
 @jwt_required()
 def post() -> Response:
-    """ログインルート"""
-
     return JobSeekerModule().post()
+
+
+@job_seeker.route("/<int:id>", methods=["PATCH"])
+@jwt_required()
+def patch(id) -> Response:
+    return JobSeekerModule().patch(id)
+
+
+@job_seeker.route("/<int:id>", methods=["DELETE"])
+@jwt_required()
+def delete(id) -> Response:
+    return JobSeekerModule().delete(id)
