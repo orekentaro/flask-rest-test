@@ -22,7 +22,14 @@ class BaseSerializer:
         return raw_data_list
 
     def is_valid(self, to_update: bool = False, *args, **kwargs):
-        pass
+        if not to_update:
+            for i in self.required:  # type: ignore[attr-defined]
+                if kwargs.get(i) is None:
+                    raise ValueError(f"項目'{i}'は必須です")
+        else:
+            for i in self.read_onry:  # type: ignore[attr-defined]
+                if kwargs.get(i):
+                    raise ValueError(f"項目'{i}'は変更できません")
 
     def _get_one(
         self, model: BaseModel, id: int, to_model: bool = False
@@ -37,7 +44,7 @@ class BaseSerializer:
         to_model: bool = False,
         is_delete: bool = False,
         *args,
-        **kwargs
+        **kwargs,
     ) -> Union[list[dict[str, Any]], list[BaseModel]]:
         with session() as db_session:
             stmt = select(model).filter_by(is_delete=is_delete, **kwargs)

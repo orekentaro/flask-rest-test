@@ -13,6 +13,7 @@ from serializer.progress_info_serializer import ProgressInfoSerializer
 
 class JobSeekerSerializer(BaseSerializer):
     required = ["name", "ads_id"]
+    read_onry: list[str] = []
 
     def data(self, job_seeker: Union[JobSeeker, list[JobSeeker]]) -> Union[dict[str, Any], list]:  # type: ignore[override]
         if type(job_seeker) == list:
@@ -29,6 +30,10 @@ class JobSeekerSerializer(BaseSerializer):
             for i in self.required:
                 if kwargs.get(i) is None:
                     raise ValueError(f"項目'{i}'は必須です")
+        else:
+            for i in self.read_onry:
+                if kwargs.get(i):
+                    raise ValueError(f"項目'{i}'は変更できません")
 
         if gender := kwargs.get("gender"):
             if const.GENDER.get(gender) is None:
