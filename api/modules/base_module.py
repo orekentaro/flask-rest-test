@@ -1,4 +1,4 @@
-from typing import Any, Optional, TypeAlias
+from typing import Any, Optional, TypeAlias, Union
 
 import utils.constans as const
 from flask import Response, json, request
@@ -13,8 +13,10 @@ class BaseModule:
     serializer: TypeAlias = BaseSerializer
     data: Optional[model] = None
 
-    def get(self, id: Optional[int] = None) -> Response:
-        condition = dict(request.args)
+    def get(self, id: Optional[int] = None, all_data: bool = False) -> Response:
+        condition: dict[str, Union[str, bool]] = dict(request.args)
+        if not all_data:
+            condition.update({"is_delete": False})
         if id is not None:
             condition.update({"id": str(id)})
             self.one_or_none(**condition)
