@@ -2,7 +2,7 @@ Flask
 Flask-Cors
 uWSGI
 autopep8
-flake8
+flake8==4.0.1
 psycopg2
 pytest
 requests

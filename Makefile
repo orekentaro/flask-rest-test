@@ -45,6 +45,3 @@ run:
 	make -j start
 
 start: run_client run_docker
-
-test_api:
-	docker exec -it api pytest --cov=. --cov-report=xml  ${ARG}

@@ -1,10 +1,11 @@
 from typing import Any, Optional, TypeAlias, Union
 
-import utils.constans as const
 from flask import Response, json, request
+from sqlalchemy import insert, select, update
+
+import utils.constans as const
 from models.base_model import BaseModel, session
 from serializer.base_serializer import BaseSerializer
-from sqlalchemy import insert, select, update
 
 
 class BaseModule:
@@ -41,6 +42,7 @@ class BaseModule:
         if r is None:
             return Response(status=const.RESPONSE_BAD_REQUEST)
 
+        self.serializer().is_valid(to_update=True, **r)
         self.update({"id": id}, **r)
         return Response(status=const.RESPONSE_OK)
 

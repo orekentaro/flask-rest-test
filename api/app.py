@@ -1,7 +1,8 @@
-import utils.middleware as mw
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+
+import utils.middleware as mw
 from routes.auth import auth
 from routes.job_seeker import job_seeker
 

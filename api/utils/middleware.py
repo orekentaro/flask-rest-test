@@ -1,7 +1,8 @@
 import traceback
 
-import utils.constans as const
 from flask import Response, current_app, jsonify, logging, request
+
+import utils.constans as const
 
 
 def before_request():

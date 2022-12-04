@@ -1,4 +1,3 @@
-import re
 from typing import Final
 
 RESPONSE_OK: Final[int] = 200

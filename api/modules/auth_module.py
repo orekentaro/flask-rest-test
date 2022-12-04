@@ -1,9 +1,9 @@
 import hashlib
-from typing import Any
 
-import utils.constans as const
 from flask import Response, json, request
 from flask_jwt_extended import set_access_cookies
+
+import utils.constans as const
 from models.user_master import UserMaster
 from modules.base_module import BaseModule
 from serializer.auth_serializer import AuthSerializer

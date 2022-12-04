@@ -1,7 +1,8 @@
 from typing import Any, Optional, TypeAlias, Union
 
-from models.base_model import BaseModel, session
 from sqlalchemy import select
+
+from models.base_model import BaseModel, session
 
 
 class BaseSerializer:

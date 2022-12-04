@@ -1,7 +1,8 @@
 import sys
 
-from models.base_model import ENGINE, BaseModel
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
+
+from models.base_model import ENGINE, BaseModel
 
 
 class JobSeeker(BaseModel):

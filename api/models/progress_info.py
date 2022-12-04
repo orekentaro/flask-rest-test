@@ -1,7 +1,8 @@
 import sys
 
-from models.base_model import ENGINE, BaseModel
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, Text
+
+from models.base_model import ENGINE, BaseModel
 
 
 class ProgressInfo(BaseModel):

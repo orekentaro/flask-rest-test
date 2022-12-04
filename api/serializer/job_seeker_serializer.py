@@ -1,5 +1,5 @@
 import re
-from typing import Any, Union
+from typing import Any, Optional, Union
 
 import utils.constans as const
 from models.job_ads import JobAds
@@ -15,7 +15,9 @@ class JobSeekerSerializer(BaseSerializer):
     required = ["name", "ads_id"]
     read_onry: list[str] = []
 
-    def data(self, job_seeker: Union[JobSeeker, list[JobSeeker]]) -> Union[dict[str, Any], list]:  # type: ignore[override]
+    def data(  # type: ignore[override]
+        self, job_seeker: Union[JobSeeker, list[JobSeeker]]
+    ) -> Union[dict[str, Any], list]:
         if type(job_seeker) == list:
             return_list = []
             for js in job_seeker:
@@ -25,12 +27,17 @@ class JobSeekerSerializer(BaseSerializer):
         else:
             return self._make_detail(job_seeker)  # type: ignore[arg-type]
 
-    def is_valid(self, to_update: bool = False, *args, **kwargs):
+    def is_valid(
+        self, to_update: bool = False, id: Optional[int] = None, *args, **kwargs
+    ):
         if not to_update:
             for i in self.required:
                 if kwargs.get(i) is None:
                     raise ValueError(f"項目'{i}'は必須です")
         else:
+            if self._get_one(JobSeeker, id, to_model=True) is None:  # type: ignore[arg-type]
+                raise ValueError("対象の求職者が存在しません")
+
             for i in self.read_onry:
                 if kwargs.get(i):
                     raise ValueError(f"項目'{i}'は変更できません")
@@ -47,9 +54,7 @@ class JobSeekerSerializer(BaseSerializer):
             raise ValueError("該当の求人広告は存在しません")
 
     def _make_list(self, job_seeker: JobSeeker) -> dict[str, Any]:
-        ads = JobAdsSerializer().data(
-            self._get_one(JobAds, job_seeker.ads_id, to_model=True)  # type: ignore[arg-type]
-        )
+        ads = JobAdsSerializer().data(self._get_one(JobAds, job_seeker.ads_id, to_model=True))  # type: ignore[arg-type]
         job_seeker_data = self._model_to_dict(job_seeker)
         job_seeker_data["ads"] = ads
         job_seeker_data.update({"gender": const.GENDER[job_seeker_data["gender"]]})

@@ -8,7 +8,9 @@ from serializer.base_serializer import BaseSerializer
 
 
 class ProgressInfoSerializer(BaseSerializer):
-    def data(self, progress_info: Union[ProgressInfo, list[ProgressInfo]]) -> Union[dict[str, Any], list]:  # type: ignore[override]
+    def data(  # type: ignore[override]
+        self, progress_info: Union[ProgressInfo, list[ProgressInfo]]
+    ) -> Union[dict[str, Any], list]:
         if type(progress_info) == list:
             return_list = []
             for pi in progress_info:

@@ -1,4 +1,5 @@
 import pytest
+
 from app import app
 
 
@@ -16,9 +17,7 @@ class TestUserModule:
 
     def test_login_成功(self, client):
         with client:
-            res = client.post(
-                "/auth/", json={"email": "test@test.test", "password": "password123"}
-            )
+            res = client.post("/auth/", json={"email": "test@test.test", "password": "password123"})
             assert res.status_code == 200
 
     def test_login_失敗_データなし(self, client):
@@ -28,9 +27,7 @@ class TestUserModule:
 
     def test_login_ログイン失敗不一致(self, client):
         with client:
-            res = client.post(
-                "/auth/", json={"email": "test@test.test", "password": "password12"}
-            )
+            res = client.post("/auth/", json={"email": "test@test.test", "password": "password12"})
             assert res.status_code == 401
 
     def test_login_値欠損(self, client):
