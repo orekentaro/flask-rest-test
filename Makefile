@@ -45,3 +45,6 @@ run:
 	make -j start
 
 start: run_client run_docker
+
+lint:
+	docker exec -it api make lint

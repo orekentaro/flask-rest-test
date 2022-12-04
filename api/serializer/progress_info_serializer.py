@@ -23,9 +23,7 @@ class ProgressInfoSerializer(BaseSerializer):
     def _make_data(self, progress_info: ProgressInfo) -> dict[str, Any]:
         pi = self._model_to_dict(progress_info)
         pi["result"] = self._get_one(ProgressResult, pi["result"])
-        pi["progress"] = self._get_one(ProgressMaster, pi["progress_master_id"])[
-            "title"
-        ]
+        pi["progress"] = self._get_one(ProgressMaster, pi["progress_master_id"])["title"]
         pi["interviewer"] = self._get_one(UserMaster, pi["user_id"])["name"]
         del pi["job_seeker_id"]
         del pi["progress_master_id"]

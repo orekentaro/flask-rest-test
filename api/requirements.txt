@@ -13,3 +13,6 @@ pyjwt
 pytest-mock
 pytest-cov
 flask_jwt_extended
+poetry
+mypy
+black

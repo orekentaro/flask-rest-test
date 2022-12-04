@@ -9,9 +9,7 @@ class BaseSerializer:
     required: TypeAlias = list[str]
     read_onry: TypeAlias = list[str]
 
-    def data(
-        self, model: Optional[Union[BaseModel, list[BaseModel]]]
-    ) -> Union[dict[str, Any], list[dict[str, Any]]]:
+    def data(self, model: Optional[Union[BaseModel, list[BaseModel]]]) -> Union[dict[str, Any], list[dict[str, Any]]]:
         if type(model) != list:
             raw_data = self._model_to_dict(model)
             return raw_data
@@ -32,9 +30,7 @@ class BaseSerializer:
                 if kwargs.get(i):
                     raise ValueError(f"項目'{i}'は変更できません")
 
-    def _get_one(
-        self, model: BaseModel, id: int, to_model: bool = False
-    ) -> Optional[dict[str, Any]]:
+    def _get_one(self, model: BaseModel, id: int, to_model: bool = False) -> Optional[dict[str, Any]]:
         if to_model:
             return session().get(model, id)
         return self._model_to_dict(session().get(model, id))
