@@ -2,7 +2,8 @@ import hashlib
 from datetime import datetime as dt
 
 from models.auth_master import AuthMaster
-from models.base_model import ENGINE, BaseModel, session
+from models.base_model import BaseModel
+from models.create_session import ENGINE, session
 from models.job_ads import JobAds
 from models.job_master import JobMaster
 from models.job_seeker import JobSeeker

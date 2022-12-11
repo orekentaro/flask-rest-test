@@ -1,11 +1,11 @@
 from typing import Any, Optional, TypeAlias, Union
 
-from flask import Response, json, request
-from sqlalchemy import insert, select, update
-
 import utils.constans as const
-from models.base_model import BaseModel, session
+from flask import Response, json, request
+from models.base_model import BaseModel
+from models.create_session import session
 from serializer.base_serializer import BaseSerializer
+from sqlalchemy import insert, select, update
 
 
 class BaseModule:

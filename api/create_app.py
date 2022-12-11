@@ -1,29 +1,29 @@
-import os
-
+import utils.middleware as mw
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+from routes.auth import auth
+from routes.job_seeker import job_seeker
 
 
-def _create_app():
+def create_app():
     app = Flask(__name__)
     app.config.from_object("utils.config")
     CORS(app, supports_credentials=True)
     app.secret_key = "gwdfsgfadsdtyhjyetdgfsag0-a04o31qw@pa]:q12wegiejq8@43uqow"
     jwt = JWTManager()
     jwt.init_app(app)
-    app.config[
-        "SQLALCHEMY_DATABASE_URI"
-    ] = "postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}".format(
-        **{
-            "DB_USER": os.environ["POSTGRES_USER"],
-            "DB_PASS": os.environ["POSTGRES_PASSWORD"],
-            "DB_HOST": os.environ["DB_HOST"],
-            "DB_PORT": os.environ["DB_PORT"],
-            "DB_NAME": os.environ["POSTGRES_DB"],
-        }
-    )
+
+    # route
+    app.register_blueprint(auth)
+    app.register_blueprint(job_seeker)
+    app.before_request(mw.before_request)
+    app.after_request(mw.after_request)
+
+    # error handler
+    app.register_error_handler(Exception, mw.exception_handler)
+    app.register_error_handler(ValueError, mw.value_error_handler)
     return app
 
 
-APP = _create_app()
+APP = create_app()
