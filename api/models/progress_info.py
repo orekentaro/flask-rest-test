@@ -1,8 +1,7 @@
 import sys
 
+from models.base_model import BaseModel
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, Text
-
-from models.base_model import ENGINE, BaseModel
 
 
 class ProgressInfo(BaseModel):
@@ -32,11 +31,3 @@ class ProgressInfo(BaseModel):
         Integer,
         ForeignKey("progress_result.id", onupdate="CASCADE", ondelete="CASCADE"),
     )
-
-
-def create_progress_info(args):
-    BaseModel.metadata.create_all(bind=ENGINE)
-
-
-if __name__ == "__main__":
-    create_progress_info(sys.argv)

@@ -1,8 +1,7 @@
 import sys
 
+from models.base_model import BaseModel
 from sqlalchemy import BigInteger, Boolean, Column, Integer, String
-
-from models.base_model import ENGINE, BaseModel
 
 
 class UserMaster(BaseModel):
@@ -17,11 +16,3 @@ class UserMaster(BaseModel):
     miss_count = Column("miss_count", BigInteger, server_default="0", nullable=False)
     is_init = Column("init_flag", Boolean, default=False, nullable=False)
     auth_id = Column("auth_id", Integer, nullable=False)
-
-
-def create_user(args):
-    BaseModel.metadata.create_all(bind=ENGINE)
-
-
-if __name__ == "__main__":
-    create_user(sys.argv)

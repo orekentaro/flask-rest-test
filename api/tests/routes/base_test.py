@@ -1,16 +1,19 @@
 import pytest
-from app import app
+from create_app import APP
+from rb import rb
 
 
 class BaseTest:
-    @pytest.fixture
+    @pytest.fixture(scope="session")
     def app_test(self):
-        app.config.update({"TESTING": True})
+        APP.config.update({"TESTING": True})
+        app = rb(APP)
+
         # TODO:テスト用DBに接続する様に頑張る
         # yield app
         return app
 
-    @pytest.fixture
+    @pytest.fixture(scope="session")
     def client(self, app_test):
         return app_test.test_client()
 

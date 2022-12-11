@@ -1,8 +1,7 @@
 import sys
 
+from models.base_model import BaseModel
 from sqlalchemy import Column, ForeignKey, Integer, Text
-
-from models.base_model import ENGINE, BaseModel
 
 
 class Memo(BaseModel):
@@ -16,11 +15,3 @@ class Memo(BaseModel):
         ForeignKey("job_seeker.id", onupdate="CASCADE", ondelete="CASCADE"),
     )
     memo = Column("memo", Text, nullable=False)
-
-
-def create_memo(args):
-    BaseModel.metadata.create_all(bind=ENGINE)
-
-
-if __name__ == "__main__":
-    create_memo(sys.argv)

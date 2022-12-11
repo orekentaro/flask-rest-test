@@ -1,8 +1,7 @@
 import sys
 
+from models.base_model import BaseModel
 from sqlalchemy import BigInteger, Column, ForeignKey, Integer, String, Text
-
-from models.base_model import ENGINE, BaseModel
 
 
 class JobAds(BaseModel):
@@ -21,11 +20,3 @@ class JobAds(BaseModel):
     contents = Column("contents", Text)
     views = Column("views", BigInteger)
     cost = Column("cost", BigInteger)
-
-
-def create_job_ads(args):
-    BaseModel.metadata.create_all(bind=ENGINE)
-
-
-if __name__ == "__main__":
-    create_job_ads(sys.argv)

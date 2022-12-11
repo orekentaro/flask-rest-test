@@ -1,8 +1,7 @@
 import sys
 
+from models.base_model import BaseModel
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
-
-from models.base_model import ENGINE, BaseModel
 
 
 class JobSeeker(BaseModel):
@@ -21,11 +20,3 @@ class JobSeeker(BaseModel):
         nullable=False,
     )
     is_active = Column("is_active", Boolean, default=True, nullable=False)
-
-
-def create_job_seeker(args):
-    BaseModel.metadata.create_all(bind=ENGINE)
-
-
-if __name__ == "__main__":
-    create_job_seeker(sys.argv)
