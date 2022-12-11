@@ -1,5 +1,3 @@
-import sys
-
 from models.base_model import BaseModel
 from sqlalchemy import BigInteger, Column, ForeignKey, Integer, String, Text
 

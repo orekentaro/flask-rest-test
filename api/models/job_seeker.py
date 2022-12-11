@@ -1,5 +1,3 @@
-import sys
-
 from models.base_model import BaseModel
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text
 
