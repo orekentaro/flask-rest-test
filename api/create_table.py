@@ -3,7 +3,7 @@ from datetime import datetime as dt
 
 from models.auth_master import AuthMaster
 from models.base_model import BaseModel
-from models.create_session import ENGINE, session
+from models.create_session import get_engine, session
 from models.job_ads import JobAds
 from models.job_master import JobMaster
 from models.job_seeker import JobSeeker
@@ -15,7 +15,7 @@ from models.user_master import UserMaster
 
 
 def create_table():
-    BaseModel.metadata.create_all(bind=ENGINE)
+    BaseModel.metadata.create_all(bind=get_engine())
     try:
         _create_data()
     except Exception as e:
