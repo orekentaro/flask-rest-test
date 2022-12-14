@@ -6,6 +6,7 @@ from models.base_model import BaseModel
 from models.create_session import session
 from serializer.base_serializer import BaseSerializer
 from sqlalchemy import insert, select, update
+from werkzeug.exceptions import NotFound
 
 
 class BaseModule:
@@ -22,7 +23,7 @@ class BaseModule:
             condition.update({"id": str(id)})
             self.one_or_none(**condition)
             if self.data is None:
-                raise Exception("データが存在しません。")
+                raise NotFound(f"データが存在しません:{id}")
         else:
             self.all(**condition)
         res = self.serialize()

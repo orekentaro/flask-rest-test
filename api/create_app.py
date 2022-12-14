@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from routes.auth import auth
 from routes.job_seeker import job_seeker
+from werkzeug.exceptions import BadRequest, NotFound
 
 
 def create_app():
@@ -23,6 +24,8 @@ def create_app():
     # error handler
     app.register_error_handler(Exception, mw.exception_handler)
     app.register_error_handler(ValueError, mw.value_error_handler)
+    app.register_error_handler(BadRequest, mw.bad_request_handler)
+    app.register_error_handler(NotFound, mw.not_found_handler)
     return app
 
 

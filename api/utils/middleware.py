@@ -1,8 +1,7 @@
 import traceback
 
-from flask import Response, current_app, jsonify, logging, request
-
 import utils.constans as const
+from flask import Response, current_app, jsonify, logging, request
 
 
 def before_request():
@@ -45,3 +44,25 @@ def value_error_handler(ex):
     # 予期せぬ例外発生時
     logger.error(traceback.format_exc())
     return jsonify({"msg": f"バリデーションエラー:{ex}"}), const.RESPONSE_BAD_REQUEST
+
+
+def not_found_handler(ex):
+    """
+    共通例外処理 NotFound
+    """
+    logger = logging.create_logger(current_app)
+
+    # 予期せぬ例外発生時
+    logger.error(traceback.format_exc())
+    return jsonify({"msg": f"データが見つかりません:{ex}"}), const.RESPONSE_NOTFOUND
+
+
+def bad_request_handler(ex):
+    """
+    共通例外処理 NotFound
+    """
+    logger = logging.create_logger(current_app)
+
+    # 予期せぬ例外発生時
+    logger.error(traceback.format_exc())
+    return jsonify({"msg": f"リクエストが不正です:{ex}"}), const.RESPONSE_BAD_REQUEST
