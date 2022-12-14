@@ -9,7 +9,7 @@ class AuthSerializer(BaseSerializer):
     def data(self, user: Optional[UserMaster]) -> dict[str, Any]:  # type: ignore[override]
         if user is None:
             return {}
-        auth = self._get_one(AuthMaster, user.auth_id)
+        auth = self._get_one(AuthMaster, user.auth_id) or {}
         user_data = user.__dict__
         user_data.pop("_sa_instance_state")
         user_data.update(auth_name=auth.get("auth", ""))
