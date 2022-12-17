@@ -1,68 +1,91 @@
-import hashlib
-from contextlib import contextmanager
-from models.db import session
-from models.id_model import Id
-from models.user_master import UserMaster
+from typing import Any, Optional, TypeAlias, Union
+
+import utils.constans as const
+from flask import Response, json, request
+from models.base_model import BaseModel
+from models.create_session import session
+from serializer.base_serializer import BaseSerializer
+from sqlalchemy import insert, select, update
+from werkzeug.exceptions import NotFound
 
 
 class BaseModule:
-    @contextmanager
-    def session_scope() -> object:
-        db_session = session()
-        try:
-            yield db_session
-            db_session.commit()
-        except Exception:
-            db_session.rollback()
-            raise
-        finally:
-            db_session.close()
 
-    @classmethod
-    def get_id(cls, target_id: str) -> int:
-        return_id = 1
-        with cls.session_scope() as db_session:
-            this_id = db_session.query(Id).filter_by(
-                id_name=target_id).with_for_update().first()
-            if this_id:
-                return_id = this_id.id_count + 1
-                this_id.id_count = return_id
-                db_session.add(this_id)
+    model: TypeAlias = BaseModel
+    serializer: TypeAlias = BaseSerializer
+    data: Optional[model] = None
 
-            else:
-                create_id = Id()
-                create_id.id_count = return_id
-                create_id.id_name = target_id
-                db_session.add(create_id)
+    def get(self, id: Optional[int] = None, all_data: bool = False) -> Response:
+        condition: dict[str, Union[str, bool]] = dict(request.args)
+        if not all_data:
+            condition.update({"is_delete": False})
+        if id is not None:
+            condition.update({"id": str(id)})
+            self.one_or_none(**condition)
+            if self.data is None:
+                raise NotFound(f"データが存在しません:{id}")
+        else:
+            self.all(**condition)
+        res = self.serialize()
+        return Response(status=const.RESPONSE_OK, response=json.dumps(res))
 
-        return return_id
+    def post(self):
+        r = request.json
+        self.serializer().is_valid(**r)
+        self.save(**r)
+        return Response(status=const.RESPONSE_OK)
 
-    @classmethod
-    def password_hash(cls, password: str) -> str:
-        return hashlib.sha256(password.encode('utf-8')).hexdigest()
+    def patch(self, id: int):
+        if id is None:
+            return Response(status=const.RESPONSE_BAD_REQUEST)
 
-    @classmethod
-    def get_user(cls, **user_info: dict) -> object:
-        with cls.session_scope() as db_session:
-            user = db_session.query(
-                UserMaster
-                ).filter_by(
-                    **user_info, delete_flag="0"
-                ).one_or_none()
-            if user:
-                user = user.__dict__
-        return user
+        r = request.json
+        if r is None:
+            return Response(status=const.RESPONSE_BAD_REQUEST)
 
-    @classmethod
-    def date_to_string(cls, date: object) -> str:
-        try:
-            return_date = date.strftime('%Y/%m/%d')
-        except Exception:
-            return_date = None
-        return return_date
+        self.serializer().is_valid(to_update=True, **r)
+        self.update({"id": id}, **r)
+        return Response(status=const.RESPONSE_OK)
 
+    def delete(self, id: int):
+        if id is None:
+            return Response(status=const.RESPONSE_BAD_REQUEST)
 
-    class Constant:
-        DELETE_FLAG_OFF = "0"
-        DELETE_FLAG_ON = "1"
-        GENDER_DICT = {"m": "男性", "f": "女性"}
+        self.destroy({"id": id})
+        return Response(status=const.RESPONSE_OK)
+
+    def all(self, *args, **kwargs) -> Optional[model]:
+        with session() as db_session:
+            stmt = select(self.model).filter_by(**kwargs)
+            self.data = db_session.execute(stmt).scalars().all()
+            return self.data
+
+    def one_or_none(self, *args, **kwargs) -> Optional[model]:
+        with session() as db_session:
+            stmt = select(self.model).filter_by(**kwargs)
+            self.data = db_session.execute(stmt).scalars().one_or_none()
+            return self.data
+
+    def first(self, *args, **kwargs) -> Optional[model]:
+        with session() as db_session:
+            stmt = select(self.model).filter_by(**kwargs)
+            self.data = db_session.execute(stmt).scalars().first()
+            return self.data
+
+    def save(self, *args, **kwargs) -> None:
+        with session() as db_session, db_session.begin():
+            stmt = insert(self.model).values(**kwargs)
+            db_session.execute(stmt)
+
+    def update(self, fillter: dict[str, Any], *args, **kwargs) -> None:
+        with session() as db_session, db_session.begin():
+            stmt = update(self.model).values(**kwargs).filter_by(**fillter)
+            db_session.execute(stmt)
+
+    def destroy(self, fillter: dict[str, Any]) -> None:
+        with session() as db_session, db_session.begin():
+            stmt = update(self.model).values(is_delete=True).filter_by(**fillter)
+            db_session.execute(stmt)
+
+    def serialize(self) -> dict[str, Any]:
+        return {"data": self.serializer().data(self.data)}

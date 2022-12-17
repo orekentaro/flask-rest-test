@@ -1,18 +1,10 @@
-import sys
-from sqlalchemy import Column, String
-from models.db import Base, ENGINE
+from models.base_model import BaseModel
+from sqlalchemy import Column, Integer, String
 
 
-class AuthMaster(Base):
+class AuthMaster(BaseModel):
     """権限マスタ"""
-    __tablename__ = 'auth_master'
-    auth_id = Column('auth_id', String(200), nullable=False, primary_key=True)
-    auth = Column('auth', String(200), nullable=False)
 
-
-def create_auth(args):
-    Base.metadata.create_all(bind=ENGINE)
-
-
-if __name__ == "__main__":
-    create_auth(sys.argv)
+    __tablename__ = "auth_master"
+    id = Column("id", Integer, nullable=False, primary_key=True)
+    auth = Column("auth", String(200), nullable=False)
