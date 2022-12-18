@@ -23,10 +23,14 @@ def app_test():
     )
     engine = create_engine(db, echo=True)
     conn = engine.connect()
-    conn.execution_options(isolation_level="AUTOCOMMIT").execute('drop database if exists "recruit-management/test"')
+    conn.execution_options(isolation_level="AUTOCOMMIT").execute(
+        'drop database if exists "recruit-management/test"'
+    )
 
     conn = engine.connect()
-    conn.execution_options(isolation_level="AUTOCOMMIT").execute('create database "recruit-management/test"')
+    conn.execution_options(isolation_level="AUTOCOMMIT").execute(
+        'create database "recruit-management/test"'
+    )
     conn.execute("commit")
     conn.close()
 
@@ -35,8 +39,12 @@ def app_test():
     yield app
 
     conn = engine.connect()
-    conn.execute("select pg_terminate_backend(pid) from pg_stat_activity where datname = 'recruit-management/test';")
-    conn.execution_options(isolation_level="AUTOCOMMIT").execute('drop database if exists "recruit-management/test"')
+    conn.execute(
+        "select pg_terminate_backend(pid) from pg_stat_activity where datname = 'recruit-management/test';"
+    )
+    conn.execution_options(isolation_level="AUTOCOMMIT").execute(
+        'drop database if exists "recruit-management/test"'
+    )
 
 
 @pytest.fixture(scope="session", autouse=True)
