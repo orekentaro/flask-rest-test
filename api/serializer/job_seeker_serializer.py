@@ -15,7 +15,7 @@ from serializer.progress_info_serializer import ProgressInfoSerializer
 
 class JobSeekerSerializer(BaseSerializer):
     required = ["name", "ads_id"]
-    read_onry: list[str] = []
+    read_onry: list[str] = ["ads_id"]
 
     def data(  # type: ignore[override]
         self, job_seeker: Union[JobSeeker, list[JobSeeker]]
@@ -36,6 +36,10 @@ class JobSeekerSerializer(BaseSerializer):
             for i in self.required:
                 if kwargs.get(i) is None:
                     raise ValueError(f"項目'{i}'は必須です")
+
+            if self._get_one(JobAds, kwargs.get("ads_id", 0), to_model=True) is None:
+                raise ValueError("該当の求人広告は存在しません")
+
         else:
             if self._get_one(JobSeeker, id, to_model=True) is None:  # type: ignore[arg-type]
                 raise NotFound("対象の求職者が存在しません")
@@ -51,9 +55,6 @@ class JobSeekerSerializer(BaseSerializer):
         if birthday := kwargs.get("birthday"):
             if not re.match(const.DATE_PATTERN, birthday):
                 raise ValueError("生年月日が不正です")
-
-        if self._get_one(JobAds, kwargs.get("ads_id", 0), to_model=True) is None:
-            raise ValueError("該当の求人広告は存在しません")
 
     def _make_list(self, job_seeker: JobSeeker) -> dict[str, Any]:
         ads = JobAdsSerializer().data(self._get_one(JobAds, job_seeker.ads_id, to_model=True))  # type: ignore[arg-type]

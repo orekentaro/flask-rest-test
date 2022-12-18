@@ -44,7 +44,7 @@ class BaseModule:
         if r is None:
             return Response(status=const.RESPONSE_BAD_REQUEST)
 
-        self.serializer().is_valid(to_update=True, **r)
+        self.serializer().is_valid(to_update=True, id=id, **r)
         self.update({"id": id}, **r)
         return Response(status=const.RESPONSE_OK)
 
