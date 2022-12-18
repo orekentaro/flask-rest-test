@@ -118,7 +118,7 @@ def test_patch_成功(client):
         }
         res = client.patch("/job_seeker/1", json=payload)
         assert res.status_code == const.RESPONSE_OK
-        payload.update({"id": 1})
+        payload.update({"id": "1"})
 
         with session() as db_session:
             stmt = select(JobSeeker).filter_by(**payload)
