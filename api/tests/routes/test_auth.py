@@ -3,9 +3,7 @@ import utils.constans as const
 
 def test_login_成功(client):
     with client:
-        res = client.post(
-            "/auth/", json={"email": "test@test.test", "password": "password123"}
-        )
+        res = client.post("/auth/", json={"email": "test@test.test", "password": "password123"})
         assert res.status_code == const.RESPONSE_OK
 
 
@@ -17,9 +15,7 @@ def test_login_失敗_データなし(client):
 
 def test_login_ログイン失敗不一致(client):
     with client:
-        res = client.post(
-            "/auth/", json={"email": "test@test.test", "password": "password12"}
-        )
+        res = client.post("/auth/", json={"email": "test@test.test", "password": "password12"})
         assert res.status_code == const.RESPONSE_UNAUTHORIZET
 
 

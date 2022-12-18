@@ -1,5 +1,6 @@
-from models.base_model import BaseModel
 from sqlalchemy import Column, ForeignKey, Integer, Text
+
+from models.base_model import BaseModel
 
 
 class Memo(BaseModel):

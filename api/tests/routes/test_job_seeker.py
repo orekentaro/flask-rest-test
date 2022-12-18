@@ -1,7 +1,8 @@
+from sqlalchemy import select
+
 import utils.constans as const
 from models.create_session import session
 from models.job_seeker import JobSeeker
-from sqlalchemy import select
 
 
 def test_get_成功(client):

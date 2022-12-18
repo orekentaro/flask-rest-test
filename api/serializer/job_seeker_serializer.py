@@ -1,6 +1,8 @@
 import re
 from typing import Any, Optional, Union
 
+from werkzeug.exceptions import NotFound
+
 import utils.constans as const
 from models.job_ads import JobAds
 from models.job_seeker import JobSeeker
@@ -9,7 +11,6 @@ from models.progress_info import ProgressInfo
 from serializer.base_serializer import BaseSerializer
 from serializer.job_ads_serializer import JobAdsSerializer
 from serializer.progress_info_serializer import ProgressInfoSerializer
-from werkzeug.exceptions import NotFound
 
 
 class JobSeekerSerializer(BaseSerializer):
@@ -28,9 +29,7 @@ class JobSeekerSerializer(BaseSerializer):
         else:
             return self._make_detail(job_seeker)  # type: ignore[arg-type]
 
-    def is_valid(
-        self, to_update: bool = False, id: Optional[int] = None, *args, **kwargs
-    ):
+    def is_valid(self, to_update: bool = False, id: Optional[int] = None, *args, **kwargs):
         if not to_update:
             for i in self.required:
                 if kwargs.get(i) is None:
@@ -59,9 +58,7 @@ class JobSeekerSerializer(BaseSerializer):
         job_seeker_data = self._model_to_dict(job_seeker)
         job_seeker_data["ads"] = ads
         job_seeker_data.update({"gender": const.GENDER[job_seeker_data["gender"]]})
-        job_seeker_data["memo"] = self._get_relation(
-            Memo, **{"job_seeker_id": job_seeker.id}
-        )
+        job_seeker_data["memo"] = self._get_relation(Memo, **{"job_seeker_id": job_seeker.id})
         del job_seeker_data["ads_id"]
         return job_seeker_data
 
