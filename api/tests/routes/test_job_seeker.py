@@ -1,7 +1,8 @@
+from sqlalchemy import select
+
 import utils.constans as const
 from models.create_session import session
 from models.job_seeker import JobSeeker
-from sqlalchemy import select
 
 
 def test_get_成功(client):
@@ -108,3 +109,44 @@ def test_post_求人広告なし(client):
         }
         res = client.post("/job_seeker/", json=payload)
         assert res.status_code == const.RESPONSE_BAD_REQUEST
+
+
+def test_patch_成功(client):
+    with client:
+        payload = {
+            "name": "テスト次郎",
+        }
+        res = client.patch("/job_seeker/1", json=payload)
+        assert res.status_code == const.RESPONSE_OK
+        payload.update({"id": "1"})
+
+        with session() as db_session:
+            stmt = select(JobSeeker).filter_by(**payload)
+            data = db_session.execute(stmt).scalars().first()
+            assert data.name == payload["name"]
+
+
+def test_patch_該当なし(client):
+    with client:
+        payload = {
+            "name": "テスト次郎",
+        }
+        res = client.patch("/job_seeker/10", json=payload)
+        assert res.status_code == const.RESPONSE_NOTFOUND
+
+
+def test_patch_編集不可(client):
+    with client:
+        payload = {
+            "ads_id": 2,
+        }
+        res = client.patch("/job_seeker/1", json=payload)
+        assert res.status_code == const.RESPONSE_BAD_REQUEST
+
+
+def test_delete_成功(client):
+    with client:
+        res = client.delete("/job_seeker/1")
+        assert res.status_code == const.RESPONSE_OK
+        js = session().get(JobSeeker, 1)
+        assert js.is_delete

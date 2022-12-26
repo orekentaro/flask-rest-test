@@ -1,10 +1,11 @@
-import utils.middleware as mw
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+from werkzeug.exceptions import BadRequest, NotFound
+
+import utils.middleware as mw
 from routes.auth import auth
 from routes.job_seeker import job_seeker
-from werkzeug.exceptions import BadRequest, NotFound
 
 
 def create_app():

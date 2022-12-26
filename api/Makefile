@@ -1,16 +1,16 @@
 lint: black flake8 isort mypy
 
 mypy:
-	poetry run mypy .
+	docker exec -it api poetry run mypy .
 
 flake8:
-	poetry run pflake8 .
+	docker exec -it api poetry run pflake8 .
 
 black:
-	poetry run black .
+	docker exec -it api poetry run black .
 
 isort:
-	poetry run isort .
+	docker exec -it api poetry run isort .
 
 test:
 	docker exec -it api pytest --cov=. --cov-report=xml	${ARG}

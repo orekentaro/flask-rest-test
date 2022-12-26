@@ -1,5 +1,6 @@
-from models.base_model import BaseModel
 from sqlalchemy import BigInteger, Column, ForeignKey, Integer, String, Text
+
+from models.base_model import BaseModel
 
 
 class JobAds(BaseModel):

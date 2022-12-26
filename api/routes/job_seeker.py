@@ -1,5 +1,6 @@
 from flask import Blueprint, Response
 from flask_jwt_extended import jwt_required
+
 from modules.job_seeker_module import JobSeekerModule
 
 job_seeker = Blueprint("job_seeker", __name__, url_prefix="/job_seeker")

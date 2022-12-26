@@ -1,5 +1,6 @@
-from models.base_model import BaseModel
 from sqlalchemy import Column, Integer, String
+
+from models.base_model import BaseModel
 
 
 class AuthMaster(BaseModel):

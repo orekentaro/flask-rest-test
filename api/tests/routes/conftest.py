@@ -1,9 +1,10 @@
 import os
 
 import pytest
+from sqlalchemy import create_engine
+
 from create_app import create_app
 from create_table import create_table
-from sqlalchemy import create_engine
 
 
 @pytest.fixture(scope="session", autouse=True)
