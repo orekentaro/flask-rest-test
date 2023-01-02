@@ -1,7 +1,5 @@
 FROM python:3.10-buster
-# FIXME: カバレッジ計測のため一旦ローカルに合わせる
-# ENV PROJECT_ROOTDIR /app
-ENV PROJECT_ROOTDIR /Users/nagatokentarou/recruit-management/api
+ENV PROJECT_ROOTDIR /app
 
 WORKDIR ${PROJECT_ROOTDIR}
 
