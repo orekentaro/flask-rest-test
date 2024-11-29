@@ -18,21 +18,18 @@
             :label-position="labelPosition"
             label-width="30px"
             :model="formData"
-            style="max-width: 90%"
-          >
+            style="max-width: 90%">
             <el-form-item label="Email" prop="email">
               <el-input
                 v-model="formData.email"
-                placeholder="メールアドレスを入力して下さい"
-              ></el-input>
+                placeholder="メールアドレスを入力して下さい"></el-input>
             </el-form-item>
             <el-form-item label="Password" prop="password">
               <el-input
                 v-model="formData.password"
                 type="password"
                 placeholder="パスワードを入力して下さい"
-                show-password
-              >
+                show-password>
               </el-input>
             </el-form-item>
             <el-form-item>
@@ -85,10 +82,10 @@ const submitForm = (formEl: FormInstance | undefined) => {
       var data = new FormData();
       data.append("email", formData.email);
       data.append("password", formData.password);
-      postApi("/api/login", data)
+      postApi("/api/auth", data)
         .then((response) => {
-          let res = response.data["result"];
-          if (res == "success") {
+          if (response.status === 200) {
+            console.log("test");
             router.push("/");
           } else {
             showMassage("ログインに失敗しました", "error");

@@ -22,10 +22,10 @@ class AuthModule(BaseModule):
         """
         ログイン認証API
         """
-        if request.json is None:
+        if request.form is None:
             raise Exception(const.REQUEST_PARM_ERROR)
 
-        r: UserMaster = request.json
+        r: UserMaster = request.form
 
         email = r.get("email")
         password: str = r.get("password")

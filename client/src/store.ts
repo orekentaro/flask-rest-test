@@ -1,37 +1,37 @@
-import Cookies  from 'js-cookie';
-import { InjectionKey } from 'vue'
-import { createStore, useStore as baseUseStore, Store } from 'vuex'
+import Cookies from "js-cookie";
+import { InjectionKey } from "vue";
+import { createStore, useStore as baseUseStore, Store } from "vuex";
 
 export interface User {
-  token: any
+  token: any;
 }
 
-export const key: InjectionKey<Store<User>> = Symbol()
+export const key: InjectionKey<Store<User>> = Symbol();
 
 // Storeを作成する
 export const store = createStore<User>({
   state: {
-    token: Cookies.get("login")
+    token: Cookies.get("csrf_access_token"),
   },
   getters: {
     getToken: (state) => {
-      return state.token
-    }
+      return state.token;
+    },
   },
   actions: {
-    update ({ commit, state }, token: User) {
-      commit('update', token)
-    }
+    update({ commit, state }, token: User) {
+      commit("update", token);
+    },
   },
   mutations: {
-    update (state, token) {
-      state.token = token
-    }
-  }
-})
+    update(state, token) {
+      state.token = token;
+    },
+  },
+});
 
 // 独自のuserStoreメソッドを定義する
-export function useStore () {
+export function useStore() {
   // InjectionKeyをuserStoreメソッドに渡す
-  return baseUseStore(key)
+  return baseUseStore(key);
 }
